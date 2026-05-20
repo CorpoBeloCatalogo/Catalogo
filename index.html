@@ -530,17 +530,28 @@
     transition: opacity 0.3s ease;
   }
   .image-modal.active { display: flex; opacity: 1; }
-  .image-modal-content {
+  
+  .image-modal-wrapper {
+    position: relative;
     max-width: 90%;
+    max-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+  }
+
+  .image-modal-content {
+    max-width: 100%;
     max-height: 90vh;
     object-fit: contain;
     border-radius: 8px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.5);
     transform: scale(0.95);
     transition: transform 0.3s ease;
-    cursor: default;
   }
   .image-modal.active .image-modal-content { transform: scale(1); }
+  
   .image-modal-close {
     position: absolute;
     top: 20px;
@@ -554,8 +565,42 @@
     cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     transition: background var(--transition);
+    z-index: 510;
   }
   .image-modal-close:hover { background: rgba(255,255,255,0.4); }
+
+  /* Setas de navegação do Modal */
+  .modal-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #fff;
+    font-size: 24px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background var(--transition), transform var(--transition);
+    z-index: 510;
+    user-select: none;
+  }
+  .modal-arrow:hover {
+    background: rgba(255, 255, 255, 0.35);
+    transform: translateY(-50%) scale(1.05);
+  }
+  #modalPrev { left: -70px; }
+  #modalNext { right: -70px; }
+
+  @media (max-width: 768px) {
+    #modalPrev { left: 10px; }
+    #modalNext { right: 10px; }
+    .modal-arrow { width: 40px; height: 40px; font-size: 20px; background: rgba(0,0,0,0.5); }
+  }
 
   /* ── FOOTER ── */
   footer { background: var(--preto); color: rgba(255,255,255,0.35); text-align: center; padding: 28px; font-size: 12px; letter-spacing: 0.05em; transition: background var(--transition); }
@@ -642,7 +687,11 @@
 
 <div class="image-modal" id="imageModal">
   <button class="image-modal-close" id="modalClose">&times;</button>
-  <img class="image-modal-content" id="modalImg" src="" alt="Imagem ampliada">
+  <div class="image-modal-wrapper">
+    <button class="modal-arrow" id="modalPrev">&#8592;</button>
+    <img class="image-modal-content" id="modalImg" src="" alt="Imagem ampliada">
+    <button class="modal-arrow" id="modalNext">&#8594;</button>
+  </div>
 </div>
 
 <footer>
@@ -667,6 +716,10 @@ themeToggleBtn.addEventListener('click', () => {
   const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
   document.body.setAttribute('data-theme', newTheme);
 });
+
+let globalProdutos = [];
+let currentModalImages = [];
+let currentModalIndex = 0;
 
 function parseCSV(text) {
   const lines = text.trim().split('\n');
@@ -714,7 +767,6 @@ function parseCSV(text) {
       categoriaFormatada = categoriaFormatada.charAt(0).toUpperCase() + categoriaFormatada.slice(1);
     }
     
-    // Tratamento de Preços e Descontos Dinâmicos
     let precoOriginalStr = rowObj.preco || '';
     let precoFormatado = '';
     let precoComDescontoFormatado = '';
@@ -804,7 +856,6 @@ function buildColors(tipoPlaca) {
 function renderCard(p) {
   const extraClass = p.tipo_placa === 'azul' ? 'card-placa-azul' : p.tipo_placa === 'beige-preto' ? 'card-placa-bp' : '';
   
-  // Define o bloco de preço dependendo se existe desconto ou não
   let priceBlockContent = '';
   let msgPrecoPromo = '';
   
@@ -843,117 +894,206 @@ function renderCard(p) {
       <div style="display:flex;gap:6px;flex-direction:column;align-items:flex-end">
         <a class="btn-pedir" href="https://wa.me/${p.whatsapp_ricardo}?text=${msgTxt}" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          Pedir — Ricardo
-        </a>
-        <a class="btn-pedir" style="background:var(--azul)" href="https://wa.me/${p.whatsapp_breno}?text=${msgTxt}" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          Pedir — Breno
+          <span>Pedir</span>
         </a>
       </div>
     </div>
-  </div>
-  `;
+  </div>`;
 }
 
-// Inicialização e Renderização do Catálogo
-let PROD_DATA = [];
+/* LÓGICA DE COMPORTAMENTO DOS CARDS (GALERIA INTERNA E EVENTO DO MODAL) */
+function initCardEvents() {
+  const grids = document.getElementById('cardsGrid');
 
-async function initCatalog() {
-  const grid = document.getElementById('cardsGrid');
-  try {
-    const res = await fetch(SHEET_CSV_URL);
-    if (!res.ok) throw new Error();
-    const txt = await res.text();
-    PROD_DATA = parseCSV(txt);
-    
-    renderProducts('todos');
-    setupFilterEvents();
-    setupGalleryEvents();
-    setupZoomEvents();
-  } catch (e) {
-    grid.innerHTML = '<div class="empty-state"><h3>Erro ao carregar</h3><p>Não foi possível carregar os dados dos produtos.</p></div>';
-  }
-}
+  grids.addEventListener('click', (e) => {
+    // 1. Navegação de setas dentro do próprio Card
+    if (e.target.classList.contains('gallery-arrow')) {
+      e.preventDefault();
+      e.stopPropagation();
+      const dir = parseInt(e.target.getAttribute('data-dir'));
+      const gallery = e.target.closest('.card-gallery');
+      const imgs = Array.from(gallery.querySelectorAll('img'));
+      const dots = Array.from(gallery.querySelectorAll('.gallery-dot'));
+      
+      let activeIdx = imgs.findIndex(img => img.classList.contains('active'));
+      imgs[activeIdx].classList.remove('active');
+      if (dots.length) dots[activeIdx].classList.remove('active');
+      
+      activeIdx = (activeIdx + dir + imgs.length) % imgs.length;
+      
+      imgs[activeIdx].classList.add('active');
+      if (dots.length) dots[activeIdx].classList.add('active');
+      return;
+    }
 
-function renderProducts(catFiltrada) {
-  const grid = document.getElementById('cardsGrid');
-  const label = document.getElementById('sectionLabel');
-  
-  let filtrados = catFiltrada === 'todos' ? PROD_DATA : PROD_DATA.filter(p => p.categoria.toLowerCase() === catFiltrada.toLowerCase());
-  
-  if (catFiltrada === 'todos') {
-    label.innerText = 'Todos os produtos';
-  } else {
-    label.innerText = filtrados.length > 0 ? filtrados[0].categoria : catFiltrada;
-  }
-  
-  if (filtrados.length === 0) {
-    grid.innerHTML = '<div class="empty-state"><h3>Nenhum produto encontrado</h3><p>Não existem itens disponíveis nesta categoria.</p></div>';
-    return;
-  }
-  
-  grid.innerHTML = filtrados.map(p => renderCard(p)).join('');
-}
+    // 2. Navegação via bolinhas (dots) dentro do Card
+    if (e.target.classList.contains('gallery-dot')) {
+      e.preventDefault();
+      e.stopPropagation();
+      const targetIdx = parseInt(e.target.getAttribute('data-idx'));
+      const gallery = e.target.closest('.card-gallery');
+      const imgs = Array.from(gallery.querySelectorAll('img'));
+      const dots = Array.from(gallery.querySelectorAll('.gallery-dot'));
+      
+      imgs.forEach(img => img.classList.remove('active'));
+      dots.forEach(dot => dot.classList.remove('active'));
+      
+      imgs[targetIdx].classList.add('active');
+      dots[targetIdx].classList.add('active');
+      return;
+    }
 
-function setupFilterEvents() {
-  const btns = document.querySelectorAll('#catBar .cat-btn');
-  btns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      btns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      renderProducts(btn.getAttribute('data-cat'));
-    });
-  });
-}
-
-function setupGalleryEvents() {
-  const grid = document.getElementById('cardsGrid');
-  grid.addEventListener('click', (e) => {
-    const arrow = e.target.closest('.gallery-arrow');
-    if (!arrow) return;
-    
-    e.stopPropagation();
-    const dir = parseInt(arrow.getAttribute('data-dir'));
-    const gallery = arrow.closest('.card-gallery');
-    const imgs = Array.from(gallery.querySelectorAll('img'));
-    const dots = Array.from(gallery.querySelectorAll('.gallery-dot'));
-    
-    let activeIdx = imgs.findIndex(img => img.classList.contains('active'));
-    imgs[activeIdx].classList.remove('active');
-    if (dots.length) dots[activeIdx].classList.remove('active');
-    
-    activeIdx += dir;
-    if (activeIdx >= imgs.length) activeIdx = 0;
-    if (activeIdx < 0) activeIdx = imgs.length - 1;
-    
-    imgs[activeIdx].classList.add('active');
-    if (dots.length) dots[activeIdx].classList.add('active');
-  });
-}
-
-function setupZoomEvents() {
-  const grid = document.getElementById('cardsGrid');
-  const modal = document.getElementById('imageModal');
-  const modalImg = document.getElementById('modalImg');
-  const modalClose = document.getElementById('modalClose');
-  
-  grid.addEventListener('click', (e) => {
-    const gallery = e.target.closest('.card-gallery');
-    if (!gallery || e.target.closest('.gallery-arrow')) return;
-    
-    const activeImg = gallery.querySelector('img.active');
-    if (activeImg && activeImg.src) {
-      modalImg.src = activeImg.src;
-      modal.classList.add('active');
+    // 3. Clique na imagem para abrir o Modal Ampliado
+    const clickedGallery = e.target.closest('.card-gallery');
+    if (clickedGallery && !clickedGallery.classList.contains('card-no-photo')) {
+      const card = clickedGallery.closest('.card');
+      const produtoId = card.getAttribute('data-id');
+      const produto = globalProdutos.find(p => p.id === produtoId);
+      
+      if (produto && produto.fotos.length > 0) {
+        currentModalImages = produto.fotos.map(f => f.trim()).filter(f => f.length > 0);
+        
+        const activeImg = clickedGallery.querySelector('img.active');
+        const activeSrc = activeImg ? activeImg.getAttribute('src') : currentModalImages[0];
+        
+        currentModalIndex = currentModalImages.findIndex(src => encodeURI(src) === activeSrc || src === activeSrc);
+        if (currentModalIndex === -1) currentModalIndex = 0;
+        
+        openModal();
+      }
     }
   });
-  
-  const fechar = () => modal.classList.remove('active');
-  modalClose.addEventListener('click', fechar);
-  modal.addEventListener('click', (e) => { if(e.target === modal) fechar(); });
 }
 
-document.addEventListener('DOMContentLoaded', initCatalog);
+/* LÓGICA DO MODAL COM SELETOR DE FOTOS */
+const imageModal = document.getElementById('imageModal');
+const modalImg = document.getElementById('modalImg');
+const modalClose = document.getElementById('modalClose');
+const modalPrev = document.getElementById('modalPrev');
+const modalNext = document.getElementById('modalNext');
+
+function openModal() {
+  updateModalImage();
+  imageModal.classList.add('active');
+}
+
+function closeModal() {
+  imageModal.classList.remove('active');
+}
+
+function updateModalImage() {
+  if (currentModalImages.length === 0) return;
+  modalImg.src = encodeURI(currentModalImages[currentModalIndex]);
+  
+  // Ocultar setas se houver apenas 1 imagem
+  if (currentModalImages.length <= 1) {
+    modalPrev.style.display = 'none';
+    modalNext.style.display = 'none';
+  } else {
+    modalPrev.style.display = 'flex';
+    modalNext.style.display = 'flex';
+  }
+}
+
+function navigateModal(dir) {
+  if (currentModalImages.length <= 1) return;
+  currentModalIndex = (currentModalIndex + dir + currentModalImages.length) % currentModalImages.length;
+  updateModalImage();
+}
+
+// Eventos do Modal
+modalClose.addEventListener('click', closeModal);
+imageModal.addEventListener('click', (e) => {
+  if (e.target === imageModal || e.target.classList.contains('image-modal-wrapper')) {
+    closeModal();
+  }
+});
+
+modalPrev.addEventListener('click', (e) => {
+  e.stopPropagation();
+  navigateModal(-1);
+});
+
+modalNext.addEventListener('click', (e) => {
+  e.stopPropagation();
+  navigateModal(1);
+});
+
+// Navegação por teclado para acessibilidade e facilidade
+document.addEventListener('keydown', (e) => {
+  if (!imageModal.classList.contains('active')) return;
+  if (e.key === 'Escape') closeModal();
+  if (e.key === 'ArrowLeft') navigateModal(-1);
+  if (e.key === 'ArrowRight') navigateModal(1);
+});
+
+/* FILTRAGEM E RENDERIZAÇÃO GERAL */
+function renderProdutos(produtos, filtro = 'todos') {
+  const container = document.getElementById('cardsGrid');
+  const sectionLabel = document.getElementById('sectionLabel');
+  
+  if (filtro === 'todos') {
+    sectionLabel.textContent = 'Todos os produtos';
+  } else {
+    sectionLabel.textContent = filtro;
+  }
+
+  const produtosFiltrados = filtro === 'todos' 
+    ? produtos 
+    : produtos.filter(p => p.categoria.toLowerCase() === filtro.toLowerCase());
+
+  if (produtosFiltrados.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <h3>Nenhum produto encontrado</h3>
+        <p>Não encontramos itens cadastrados para esta categoria no momento.</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = produtosFiltrados.map(p => renderCard(p)).join('');
+}
+
+function initCategoryFilter(produtos) {
+  const catBar = document.getElementById('catBar');
+  catBar.addEventListener('click', (e) => {
+    const btn = e.target.closest('.cat-btn');
+    if (!btn) return;
+
+    catBar.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const categoriaSelecionada = btn.getAttribute('data-cat');
+    renderProdutos(produtos, categoriaSelecionada);
+  });
+}
+
+/* CARREGAMENTO INICIAL DATASOURCE */
+async function loadCatalog() {
+  try {
+    const response = await fetch(SHEET_CSV_URL);
+    if (!response.ok) throw new Error('Erro ao carregar dados da planilha.');
+    
+    const csvText = await response.text();
+    globalProdutos = parseCSV(csvText);
+    
+    renderProdutos(globalProdutos, 'todos');
+    initCategoryFilter(globalProdutos);
+    initCardEvents();
+    
+  } catch (error) {
+    console.error(error);
+    document.getElementById('cardsGrid').innerHTML = `
+      <div class="empty-state">
+        <h3>Falha ao carregar o catálogo</h3>
+        <p>Por favor, tente novamente mais tarde ou entre em contato com o suporte.</p>
+      </div>
+    `;
+  }
+}
+
+window.addEventListener('DOMContentLoaded', loadCatalog);
 </script>
 </body>
 </html>
