@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Corpo Belo — Catálogo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght=300;400;600&family=DM+Sans:wght=300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --beige: #C8B89A;
+    --beige-light: #EDE4D8;
+    --beige-dark: #8C7B63;
+    --preto: #1A1A1A;
+    --preto-soft: #2E2E2E;
+    --azul: #2B4A7A;
+    --azul-light: #D6E4F5;
+    --azul-dark: #1A2F50;
+    
+    /* Cores Adicionadas */
+    --azul-marinho: #0F1E36;
+    --pink: #FF69B4;
+    --vermelho: #C82333;
+    
+    --bg: #F7F4F0;
+    --white: #FFFFFF;
+    --text: #2E2E2E;
+    --text-muted: #7A7068;
+    --border: #E0D8CE;
+    --card-radius: 16px;
+    --transition: 0.25s ease;
+    --gold: #B8986A;
+    --wpp-green: #25D366;
+    --fade-color: rgba(247, 244, 240, 1);
+  }
+
+  /* ── VARIÁVEIS DO MODO ESCURO ── */
+  [data-theme="dark"] {
+    --bg: #121212;
+    --white: #1E1E1E;
+    --text: #F5F5F5;
+    --text-muted: #A0968E;
+    --border: #333333;
+    --beige-light: #2A2621;
+    --gold-dark: #D4AF37;
+    --fade-color: rgba(18, 18, 18, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    transition: background var(--transition), color var(--transition);
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--preto);
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+    border-bottom: 1px solid rgba(200,184,154,0.25);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 300;
+    color: var(--beige);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .logo img {
+    height: 130px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .logo span {
+    color: var(--white);
+    font-weight: 600;
+    transition: color var(--transition);
+  }
+
+  /* Deixa o "Belo" dourado no modo Dark */
+  [data-theme="dark"] .logo span {
+    color: var(--gold-dark);
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  /* ── BOTÃO DARK MODE ── */
+  .theme-toggle-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(200, 184, 154, 0.3);
+    color: var(--beige);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+  }
+
+  .theme-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+  }
+
+  .theme-toggle-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+  }
+
+  /* Controla qual ícone aparece */
+  .theme-toggle-btn .sun-icon { display: none; }
+  [data-theme="dark"] .theme-toggle-btn .moon-icon { display: none; }
+  [data-theme="dark"] .theme-toggle-btn .sun-icon { display: block; }
+
+  /* ── WHATSAPP BUTTON ── */
+  .wpp-btn {
+    position: relative;
+    background: var(--wpp-green);
+    border: none;
+    border-radius: 50px;
+    padding: 10px 20px;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: var(--transition);
+    text-decoration: none;
+  }
+
+  .wpp-btn:hover { background: #1ebe5d; transform: translateY(-1px); }
+  .wpp-btn svg { width: 18px; height: 18px; fill: #fff; flex-shrink: 0; }
+
+  /* ── DROPDOWN WHATSAPP ── */
+  .wpp-wrapper { position: relative; }
+  .wpp-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    min-width: 220px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    z-index: 200;
+  }
+
+  .wpp-wrapper:hover .wpp-dropdown,
+  .wpp-wrapper:focus-within .wpp-dropdown { display: block; }
+
+  .wpp-dropdown-header {
+    padding: 12px 16px 8px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .wpp-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 500;
+    transition: background var(--transition);
+    border-top: 1px solid var(--border);
+  }
+
+  .wpp-option:hover { background: rgba(37, 211, 102, 0.1); color: var(--wpp-green); }
+
+  .wpp-option .avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--wpp-green);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600; flex-shrink: 0;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--preto);
+    padding: 60px 2rem 48px;
+    text-align: center;
+    border-bottom: 1px solid rgba(200,184,154,0.2);
+  }
+
+  .hero-tag {
+    display: inline-block;
+    background: rgba(200,184,154,0.15);
+    border: 1px solid rgba(200,184,154,0.3);
+    color: var(--beige);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 6vw, 64px);
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    transition: color var(--transition);
+  }
+
+  /* Deixa a frase principal dourada no modo Dark */
+  [data-theme="dark"] .hero h1 {
+    color: var(--gold-dark);
+  }
+
+  .hero h1 em { font-style: italic; color: var(--beige); }
+  .hero p { margin-top: 16px; color: rgba(255,255,255,0.5); font-size: 15px; font-weight: 300; }
+
+  /* ── CONTÊINER DA BARRA DE CATEGORIAS (EFEITO FADE) ── */
+  .categories-wrapper {
+    position: sticky;
+    top: 72px;
+    z-index: 90;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    transition: background var(--transition), border-color var(--transition);
+  }
+
+  .categories-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 50px;
+    background: linear-gradient(to right, rgba(255,255,255,0), var(--white));
+    pointer-events: none;
+    z-index: 2;
+    transition: background var(--transition);
+  }
+
+  .categories-bar {
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    position: relative;
+  }
+
+  .categories-bar::-webkit-scrollbar { display: none; }
+
+  .cat-btn {
+    white-space: nowrap;
+    padding: 18px 20px;
+    border: none;
+    background: none;
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: var(--transition);
+    letter-spacing: 0.03em;
+  }
+
+  .cat-btn:hover { color: var(--text); }
+  .cat-btn.active { color: var(--text); border-bottom-color: var(--gold); font-weight: 600; }
+
+  .cat-btn:last-child {
+    padding-right: 50px;
+  }
+
+  /* ── MAIN CONTENT ── */
+  main { max-width: 1280px; margin: 0 auto; padding: 48px 2rem 80px; }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .loading-msg { text-align: center; padding: 60px; color: var(--text-muted); font-size: 15px; }
+  .loading-spinner {
+    width: 32px; height: 32px;
+    border: 2px solid var(--border);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 16px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── GRID DE CARDS ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+  }
+
+  /* ── CARD BASE ── */
+  .card {
+    background: var(--white);
+    border-radius: var(--card-radius);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: transform var(--transition), box-shadow var(--transition), background var(--transition), border-color var(--transition);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.15);
+  }
+
+  /* ── CARD — GALERIA DE FOTOS ── */
+  .card-gallery {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    background: var(--beige-light);
+    cursor: zoom-in;
+    transition: background var(--transition);
+  }
+
+  .card-gallery img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .card-gallery img.active { opacity: 1; }
+
+  .gallery-dots {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 5px;
+    z-index: 2;
+  }
+
+  .gallery-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+    cursor: pointer;
+    transition: background var(--transition), transform var(--transition);
+  }
+
+  .gallery-dot.active { background: #fff; transform: scale(1.3); }
+
+  .gallery-arrows {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px;
+    opacity: 0;
+    transition: opacity var(--transition);
+  }
+
+  .card-gallery:hover .gallery-arrows { opacity: 1; }
+
+  .gallery-arrow {
+    background: rgba(255,255,255,0.85);
+    border: none;
+    border-radius: 50%;
+    width: 28px; height: 28px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    color: var(--preto);
+    transition: background var(--transition);
+    z-index: 3;
+  }
+
+  .gallery-arrow:hover { background: #fff; }
+
+  .card-no-photo { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--text-muted); font-size: 13px; cursor: default; }
+  .card-no-photo svg { opacity: 0.35; }
+
+  /* ── CARD — BADGES ADAPTÁVEIS ── */
+  .card-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    z-index: 4;
+  }
+
+  /* Badge de Desconto Dinâmica */
+  .badge-discount {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: var(--vermelho);
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    z-index: 4;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+
+  .badge-beige-preto { background: var(--preto); color: #EDE4D8; }
+  .badge-preto-azul-marinho { background: var(--preto); color: #D6E4F5; border: 1px solid var(--azul-marinho); }
+  .badge-bege { background: var(--beige); color: var(--preto); }
+  .badge-preto { background: var(--preto); color: #fff; }
+  .badge-azul-marinho { background: var(--azul-marinho); color: #fff; }
+  .badge-pink { background: var(--pink); color: #fff; }
+  .badge-vermelho { background: var(--vermelho); color: #fff; }
+  .badge-azul { background: var(--azul); color: #D6E4F5; }
+
+  /* ── CARD — INFO ── */
+  .card-body { padding: 18px 20px 20px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+  .card-category { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); font-weight: 500; }
+  .card-name { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; color: var(--text); line-height: 1.2; }
+  .card-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; flex: 1; }
+
+  /* ── CARD — CORES ── */
+  .card-colors { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+  .card-colors-label { font-size: 11px; color: var(--text-muted); font-weight: 400; }
+  .color-dot { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.1); display: inline-block; }
+  
+  .dot-beige { background: #C8B89A; }
+  .dot-preto { background: #1A1A1A; }
+  .dot-azul-marinho { background: #0F1E36; }
+  .dot-pink { background: #FF69B4; }
+  .dot-vermelho { background: #C82333; }
+  .dot-azul { background: #2B4A7A; }
+
+  /* ── CARD — PREÇO ── */
+  .card-footer { display: flex; align-items: flex-end; justify-content: space-between; padding: 14px 20px 18px; border-top: 1px solid var(--border); background: rgba(0,0,0,0.02); transition: background var(--transition), border-color var(--transition); }
+  .price-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 2px; }
+  .price-value { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; color: var(--text); }
+  
+  /* Estilos do preço antigo rasurado */
+  .price-old { font-size: 13px; text-decoration: line-through; color: var(--text-muted); font-weight: 400; margin-bottom: -2px; }
+
+  .btn-pedir {
+    background: var(--text); color: var(--white); border: none; border-radius: 50px; padding: 9px 18px;
+    font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; transition: var(--transition);
+    display: flex; align-items: center; gap: 6px; text-decoration: none;
+  }
+  .btn-pedir:hover { background: var(--gold); color: var(--preto); }
+  .btn-pedir svg { width: 14px; height: 14px; fill: currentColor; }
+
+  /* Estilos de Placas Modificados para Dark Mode */
+  .card.card-placa-bp .card-gallery { background: #1A1A1A; }
+  .card.card-placa-bp { border-color: #333; }
+  .card.card-placa-azul .card-gallery { background: var(--azul-dark); }
+  .card.card-placa-azul { border-color: var(--azul); }
+  
+  [data-theme="light"] .card.card-placa-azul .card-footer { background: #f0f5fb; }
+  [data-theme="light"] .card.card-placa-azul .price-value { color: var(--azul-dark); }
+  .card.card-placa-azul .btn-pedir { background: var(--azul); color: #fff; }
+  .card.card-placa-azul .btn-pedir:hover { background: var(--azul-dark); }
+
+  /* ── EMPTY STATE ── */
+  .empty-state { grid-column: 1 / -1; text-align: center; padding: 80px 20px; color: var(--text-muted); }
+  .empty-state h3 { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 400; margin-bottom: 8px; color: var(--text); }
+
+  /* ── MODAL DE ZOOM DA IMAGEM ── */
+  .image-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 500;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    cursor: zoom-out;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .image-modal.active { display: flex; opacity: 1; }
+  .image-modal-content {
+    max-width: 90%;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+    cursor: default;
+  }
+  .image-modal.active .image-modal-content { transform: scale(1); }
+  .image-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background var(--transition);
+  }
+  .image-modal-close:hover { background: rgba(255,255,255,0.4); }
+
+  /* ── FOOTER ── */
+  footer { background: var(--preto); color: rgba(255,255,255,0.35); text-align: center; padding: 28px; font-size: 12px; letter-spacing: 0.05em; transition: background var(--transition); }
+  footer strong { color: var(--beige); }
+
+  @media (max-width: 600px) {
+    .hero { padding: 40px 1.25rem 32px; }
+    main { padding: 32px 1.25rem 60px; }
+    .logo { font-size: 20px; }
+    .wpp-btn span { display: none; }
+    .wpp-btn { padding: 10px 12px; }
+    .hero h1 { font-size: 32px; }
+  }
+</style>
+</head>
+<body data-theme="light">
+
+<header>
+  <div class="logo">
+    <img src="image/logo_cb.png" alt="Logo Corpo Belo" onerror="this.style.display='none';">
+    Corpo <span>Belo</span>
+  </div>
+  <div class="header-right">
+    <button class="theme-toggle-btn" id="themeToggle" aria-label="Mudar Tema">
+      <svg class="moon-icon" viewBox="0 0 24 24"><path d="M12.3 22h-.1c-5.5 0-10-4.5-10-10 0-4.8 3.5-8.9 8.2-9.8.5-.1 1 .2 1.1.7.1.5-.2 1-.7 1.1-3.6.7-6.2 3.9-6.2 7.7 0 4.4 3.6 8 8 8 3.8 0 7-2.6 7.7-6.2.1-.5.6-.8 1.1-.7.5.1.8.6.7 1.1-.9 4.7-5 8.2-9.8 8.2z"/></svg>
+      <svg class="sun-icon" viewBox="0 0 24 24"><path d="M12 4c.6 0 1-.4 1-1V2c0-.6-.4-1-1-1s-1 .4-1 1v1c0 .6.4 1 1 4zm0 16c-.6 0-1 .4-1 1v1c0 .6.4 1 1 1s1-.4 1-1v-1c0-.6-.4-1-.1-1zm8.5-7.5c.6 0 1-.4 1-1h1c0-.6-.4-1-1-1h-1c-.6 0-1 .4-1 1s.4 1 1 1zM2 13h1c.6 0 1-.4 1-1s-.4-1-1-1H2c-.6 0-1 .4-1 1s.4 1 1 1zm14.5-8.1c.4.4 1 .4 1.4 0l.7-.7c.4-.4.4-1 0-1.4s-1-.4-1.4 0l-.7.7c-.4.4-.4 1 0 1.4zm-11 11c.4.4 1 .4 1.4 0l.7-.7c.4-.4.4-1 0-1.4s-1-.4-1.4 0l-.7.7c-.4.4-.4 1 0 1.4zM12 6c-3.3 0-6 2.7-6 6s2.7 6 6 6 6-2.7 6-6-2.7-6-6-6zm0 10c-2.2 0-4-1.8-4-4s1.8-4 4-4 4 1.8 4 4-1.8 4-4 4z"/></svg>
+    </button>
+
+    <div class="wpp-wrapper">
+      <button class="wpp-btn" aria-label="Contato via WhatsApp">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        <span>Fale Conosco</span>
+        <svg style="width:10px;height:10px;opacity:0.7" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+      </button>
+      <div class="wpp-dropdown">
+        <div class="wpp-dropdown-header">Escolha o atendente</div>
+        <a class="wpp-option" id="headerWppRicardo" href="#" target="_blank" rel="noopener">
+          <div class="avatar">R</div>
+          <div>
+            <div style="font-weight:600">Ricardo</div>
+            <div style="font-size:12px;color:var(--text-muted)">Atendimento</div>
+          </div>
+        </a>
+        <a class="wpp-option" id="headerWppBreno" href="#" target="_blank" rel="noopener">
+          <div class="avatar" style="background:#2B4A7A">B</div>
+          <div>
+            <div style="font-weight:600">Breno</div>
+            <div style="font-size:12px;color:var(--text-muted)">Atendimento</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-tag">Catálogo Oficial</div>
+  <h1>Conforto &amp; <em>Elegância</em><br>em cada peça</h1>
+  <p>Produtos para recuperação, suporte e bem-estar</p>
+</div>
+
+<div class="categories-wrapper">
+  <div class="categories-bar" id="catBar">
+    <button class="cat-btn active" data-cat="todos">Todos</button>
+    <button class="cat-btn" data-cat="Pós Cirúrgico">Pós Cirúrgico</button>
+    <button class="cat-btn" data-cat="Sutiã">Sutiã</button>
+    <button class="cat-btn" data-cat="Masculino">Masculino</button>
+    <button class="cat-btn" data-cat="Faixas">Faixas</button>
+    <button class="cat-btn" data-cat="Placas">Placas</button>
+    <button class="cat-btn" data-cat="Pós Parto">Pós Parto</button>
+    <button class="cat-btn" data-cat="Estético">Estético</button>
+  </div>
+</div>
+
+<main>
+  <div class="section-label" id="sectionLabel">Todos os produtos</div>
+  <div class="cards-grid" id="cardsGrid">
+    <div class="loading-msg">
+      <div class="loading-spinner"></div>
+      Carregando produtos...
+    </div>
+  </div>
+</main>
+
+<div class="image-modal" id="imageModal">
+  <button class="image-modal-close" id="modalClose">&times;</button>
+  <img class="image-modal-content" id="modalImg" src="" alt="Imagem ampliada">
+</div>
+
+<footer>
+  &copy; 2026 <strong>Corpo Belo</strong> — Todos os direitos reservados
+</footer>
+
+<script>
+const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSBYViLliX4Rs-teLwR6HfNX-1H0jXTFcaDG7lpoqT4slWXvPWf6MUOHVLSkhmNHIZhjryxmzDl9V3g/pub?output=csv';
+
+const DEFAULT_WPP = {
+  Ricardo: '5567981082135', 
+  Breno:   '5567993435284',
+};
+
+document.getElementById('headerWppRicardo').href = `https://wa.me/${DEFAULT_WPP.Ricardo}?text=Olá!%20Gostaria%20de%20um%20atendimento.`;
+document.getElementById('headerWppBreno').href = `https://wa.me/${DEFAULT_WPP.Breno}?text=Olá!%20Gostaria%20de%20um%20atendimento.`;
+
+/* LÓGICA DE DARK/LIGHT MODE */
+const themeToggleBtn = document.getElementById('themeToggle');
+themeToggleBtn.addEventListener('click', () => {
+  const currentTheme = document.body.getAttribute('data-theme');
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  document.body.setAttribute('data-theme', newTheme);
+});
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  if (lines.length < 2) return [];
+  
+  const separator = lines[0].includes(';') ? ';' : ',';
+  const headers = lines[0].split(separator).map(h => h.trim().replace(/^"|"$/g, '').toLowerCase());
+  
+  return lines.slice(1).map(line => {
+    const cols = [];
+    let cur = '', inQ = false;
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      if (c === '"') { inQ = !inQ; continue; }
+      if (c === separator && !inQ) { cols.push(cur); cur = ''; continue; }
+      cur += c;
+    }
+    cols.push(cur);
+    
+    const rowObj = {};
+    headers.forEach((headerName, index) => {
+      let rawVal = (cols[index] || '').trim().replace(/^"|"$/g, '');
+      
+      let cleanKey = headerName;
+      if (headerName.includes('descri')) cleanKey = 'descricao';
+      if (headerName.includes('preco')) cleanKey = 'preco';
+      if (headerName.includes('tipo')) cleanKey = 'tipo_placa';
+      if (headerName.includes('whatsapp_ricard')) cleanKey = 'whatsapp_ricardo';
+      if (headerName.includes('whatsapp_breno')) cleanKey = 'whatsapp_breno';
+      if (headerName.includes('desconto')) cleanKey = 'desconto';
+      if (headerName.includes('status') || headerName.includes('ativo') || headerName.includes('ativar')) cleanKey = 'status';
+      
+      rowObj[cleanKey] = rawVal;
+    });
+    
+    const fotos = [];
+    for (let i = 1; i <= 10; i++) {
+      if (rowObj[`foto${i}`]) fotos.push(rowObj[`foto${i}`]);
+    }
+    
+    let categoriaFormatada = (rowObj.categoria || '').trim();
+    if (categoriaFormatada.toLowerCase() === 'pós cirúrgico' || categoriaFormatada.toLowerCase() === 'pos cirurgico') {
+      categoriaFormatada = 'Pós Cirúrgico';
+    } else if (categoriaFormatada.length > 0) {
+      categoriaFormatada = categoriaFormatada.charAt(0).toUpperCase() + categoriaFormatada.slice(1);
+    }
+    
+    // Tratamento de Preços e Descontos Dinâmicos
+    let precoOriginalStr = rowObj.preco || '';
+    let precoFormatado = '';
+    let precoComDescontoFormatado = '';
+    let porcentagemDesconto = parseInt(rowObj.desconto) || 0;
+
+    if (precoOriginalStr) {
+      let cleanPrice = precoOriginalStr.replace('R$', '').trim().replace(',', '.');
+      const numPreco = parseFloat(cleanPrice);
+      
+      if (!isNaN(numPreco)) {
+        precoFormatado = 'R$ ' + numPreco.toFixed(2).replace('.', ',');
+        
+        if (porcentagemDesconto > 0 && porcentagemDesconto <= 100) {
+          const valorDesconto = numPreco * (porcentagemDesconto / 100);
+          const numComDesconto = numPreco - valorDesconto;
+          precoComDescontoFormatado = 'R$ ' + numComDesconto.toFixed(2).replace('.', ',');
+        }
+      } else {
+        precoFormatado = precoOriginalStr;
+      }
+    }
+    
+    return {
+      id: rowObj.id || '',
+      nome: rowObj.nome || '',
+      categoria: categoriaFormatada,
+      tipo_placa: (rowObj.tipo_placa || '').toLowerCase().trim(),
+      descricao: rowObj.descricao || '',
+      preco: precoFormatado,
+      precoComDesconto: precoComDescontoFormatado,
+      desconto: porcentagemDesconto,
+      fotos: fotos,
+      whatsapp_ricardo: rowObj.whatsapp_ricardo || DEFAULT_WPP.Ricardo,
+      whatsapp_breno: rowObj.whatsapp_breno || DEFAULT_WPP.Breno,
+      status: (rowObj.status || '').toLowerCase().trim()
+    };
+  }).filter(p => p.nome && p.status !== 'desativado' && p.status !== 'não' && p.status !== 'nao' && p.status !== '0' && p.status !== 'false');
+}
+
+function buildGallery(fotos) {
+  const fotosValidas = fotos.map(f => f.trim()).filter(f => f.length > 0);
+
+  if (!fotosValidas || fotosValidas.length === 0) {
+    return `<div class="card-gallery card-no-photo">
+      <svg width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
+        <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+        <polyline points="21 15 16 10 5 21"/>
+      </svg>
+      <span>Sem foto</span>
+    </div>`;
+  }
+
+  const imgs = fotosValidas.map((src, i) =>
+    `<img src="${encodeURI(src)}" class="${i === 0 ? 'active' : ''}" alt="Foto ${i+1}" loading="lazy" onerror="this.parentNode.classList.add('card-no-photo'); this.style.display='none';">`
+  ).join('');
+
+  const dots = fotosValidas.length > 1 ? `<div class="gallery-dots">${fotosValidas.map((_,i) => `<div class="gallery-dot ${i===0?'active':''}" data-idx="${i}"></div>`).join('')}</div>` : '';
+  const arrows = fotosValidas.length > 1 ? `<div class="gallery-arrows"><button class="gallery-arrow" data-dir="-1">&#8592;</button><button class="gallery-arrow" data-dir="1">&#8594;</button></div>` : '';
+  
+  return `<div class="card-gallery">${imgs}${dots}${arrows}</div>`;
+}
+
+function buildBadge(tipoPlaca) {
+  if (tipoPlaca === 'beige-preto') return `<div class="card-badge badge-beige-preto">Bege &amp; Preta</div>`;
+  if (tipoPlaca === 'preto-azul-marinho') return `<div class="card-badge badge-preto-azul-marinho">Preta &amp; Marinho</div>`;
+  if (tipoPlaca === 'bege') return `<div class="card-badge badge-bege">Bege</div>`;
+  if (tipoPlaca === 'preto') return `<div class="card-badge badge-preto">Preto</div>`;
+  if (tipoPlaca === 'azul marinho' || tipoPlaca === 'azul-marinho') return `<div class="card-badge badge-azul-marinho">Azul Marinho</div>`;
+  if (tipoPlaca === 'pink') return `<div class="card-badge badge-pink">Pink</div>`;
+  if (tipoPlaca === 'vermelho') return `<div class="card-badge badge-vermelho">Vermelho</div>`;
+  if (tipoPlaca === 'azul') return `<div class="card-badge badge-azul">Azul</div>`;
+  return '';
+}
+
+function buildColors(tipoPlaca) {
+  if (tipoPlaca === 'beige-preto') return `<div class="card-colors"><span class="card-colors-label">Cores:</span><span class="color-dot dot-beige" title="Bege"></span><span class="color-dot dot-preto" title="Preto"></span></div>`;
+  if (tipoPlaca === 'preto-azul-marinho' || tipoPlaca === 'preto-azul marinho') return `<div class="card-colors"><span class="card-colors-label">Cores:</span><span class="color-dot dot-preto" title="Preto"></span><span class="color-dot dot-azul-marinho" title="Azul Marinho"></span></div>`;
+  if (tipoPlaca === 'bege') return `<div class="card-colors"><span class="card-colors-label">Cor:</span><span class="color-dot dot-beige" title="Bege"></span></div>`;
+  if (tipoPlaca === 'preto') return `<div class="card-colors"><span class="card-colors-label">Cor:</span><span class="color-dot dot-preto" title="Preto"></span></div>`;
+  if (tipoPlaca === 'azul marinho' || tipoPlaca === 'azul-marinho') return `<div class="card-colors"><span class="card-colors-label">Cor:</span><span class="color-dot dot-azul-marinho" title="Azul Marinho"></span></div>`;
+  if (tipoPlaca === 'pink') return `<div class="card-colors"><span class="card-colors-label">Cor:</span><span class="color-dot dot-pink" title="Pink"></span></div>`;
+  if (tipoPlaca === 'vermelho') return `<div class="card-colors"><span class="card-colors-label">Cor:</span><span class="color-dot dot-vermelho" title="Vermelho"></span></div>`;
+  if (tipoPlaca === 'azul') return `<div class="card-colors"><span class="card-colors-label">Cor:</span><span class="color-dot dot-azul" title="Azul"></span></div>`;
+  return '';
+}
+
+function renderCard(p) {
+  const extraClass = p.tipo_placa === 'azul' ? 'card-placa-azul' : p.tipo_placa === 'beige-preto' ? 'card-placa-bp' : '';
+  
+  // Define o bloco de preço dependendo se existe desconto ou não
+  let priceBlockContent = '';
+  let msgPrecoPromo = '';
+  
+  if (p.precoComDesconto) {
+    priceBlockContent = `
+      <div class="price-old">${p.preco}</div>
+      <div class="price-value" style="color:var(--vermelho);">${p.precoComDesconto}</div>
+    `;
+    msgPrecoPromo = ` em promoção de ${p.preco} por ${p.precoComDesconto}`;
+  } else {
+    priceBlockContent = `
+      <div class="price-value">${p.preco || '<span class="price-loading">consultar</span>'}</div>
+    `;
+  }
+
+  const msgTxt = encodeURIComponent(`Olá! Tenho interesse no produto: *${p.nome}* (${p.categoria})${msgPrecoPromo}. Poderia me dar mais informações?`);
+  
+  return `
+  <div class="card ${extraClass}" data-cat="${p.categoria}" data-id="${p.id}">
+    <div style="position:relative">
+      ${buildGallery(p.fotos)}
+      ${buildBadge(p.tipo_placa)}
+      ${p.desconto > 0 ? `<div class="badge-discount">${p.desconto}% OFF</div>` : ''}
+    </div>
+    <div class="card-body">
+      <div class="card-category">${p.categoria}</div>
+      <div class="card-name">${p.nome}</div>
+      ${p.descricao ? `<div class="card-desc">${p.descricao}</div>` : ''}
+      ${buildColors(p.tipo_placa)}
+    </div>
+    <div class="card-footer">
+      <div class="price-block">
+        <div class="price-label">Preço</div>
+        ${priceBlockContent}
+      </div>
+      <div style="display:flex;gap:6px;flex-direction:column;align-items:flex-end">
+        <a class="btn-pedir" href="https://wa.me/${p.whatsapp_ricardo}?text=${msgTxt}" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Pedir — Ricardo
+        </a>
+        <a class="btn-pedir" style="background:var(--azul)" href="https://wa.me/${p.whatsapp_breno}?text=${msgTxt}" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Pedir — Breno
+        </a>
+      </div>
+    </div>
+  </div>
+  `;
+}
+
+// Inicialização e Renderização do Catálogo
+let PROD_DATA = [];
+
+async function initCatalog() {
+  const grid = document.getElementById('cardsGrid');
+  try {
+    const res = await fetch(SHEET_CSV_URL);
+    if (!res.ok) throw new Error();
+    const txt = await res.text();
+    PROD_DATA = parseCSV(txt);
+    
+    renderProducts('todos');
+    setupFilterEvents();
+    setupGalleryEvents();
+    setupZoomEvents();
+  } catch (e) {
+    grid.innerHTML = '<div class="empty-state"><h3>Erro ao carregar</h3><p>Não foi possível carregar os dados dos produtos.</p></div>';
+  }
+}
+
+function renderProducts(catFiltrada) {
+  const grid = document.getElementById('cardsGrid');
+  const label = document.getElementById('sectionLabel');
+  
+  let filtrados = catFiltrada === 'todos' ? PROD_DATA : PROD_DATA.filter(p => p.categoria.toLowerCase() === catFiltrada.toLowerCase());
+  
+  if (catFiltrada === 'todos') {
+    label.innerText = 'Todos os produtos';
+  } else {
+    label.innerText = filtrados.length > 0 ? filtrados[0].categoria : catFiltrada;
+  }
+  
+  if (filtrados.length === 0) {
+    grid.innerHTML = '<div class="empty-state"><h3>Nenhum produto encontrado</h3><p>Não existem itens disponíveis nesta categoria.</p></div>';
+    return;
+  }
+  
+  grid.innerHTML = filtrados.map(p => renderCard(p)).join('');
+}
+
+function setupFilterEvents() {
+  const btns = document.querySelectorAll('#catBar .cat-btn');
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      btns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderProducts(btn.getAttribute('data-cat'));
+    });
+  });
+}
+
+function setupGalleryEvents() {
+  const grid = document.getElementById('cardsGrid');
+  grid.addEventListener('click', (e) => {
+    const arrow = e.target.closest('.gallery-arrow');
+    if (!arrow) return;
+    
+    e.stopPropagation();
+    const dir = parseInt(arrow.getAttribute('data-dir'));
+    const gallery = arrow.closest('.card-gallery');
+    const imgs = Array.from(gallery.querySelectorAll('img'));
+    const dots = Array.from(gallery.querySelectorAll('.gallery-dot'));
+    
+    let activeIdx = imgs.findIndex(img => img.classList.contains('active'));
+    imgs[activeIdx].classList.remove('active');
+    if (dots.length) dots[activeIdx].classList.remove('active');
+    
+    activeIdx += dir;
+    if (activeIdx >= imgs.length) activeIdx = 0;
+    if (activeIdx < 0) activeIdx = imgs.length - 1;
+    
+    imgs[activeIdx].classList.add('active');
+    if (dots.length) dots[activeIdx].classList.add('active');
+  });
+}
+
+function setupZoomEvents() {
+  const grid = document.getElementById('cardsGrid');
+  const modal = document.getElementById('imageModal');
+  const modalImg = document.getElementById('modalImg');
+  const modalClose = document.getElementById('modalClose');
+  
+  grid.addEventListener('click', (e) => {
+    const gallery = e.target.closest('.card-gallery');
+    if (!gallery || e.target.closest('.gallery-arrow')) return;
+    
+    const activeImg = gallery.querySelector('img.active');
+    if (activeImg && activeImg.src) {
+      modalImg.src = activeImg.src;
+      modal.classList.add('active');
+    }
+  });
+  
+  const fechar = () => modal.classList.remove('active');
+  modalClose.addEventListener('click', fechar);
+  modal.addEventListener('click', (e) => { if(e.target === modal) fechar(); });
+}
+
+document.addEventListener('DOMContentLoaded', initCatalog);
+</script>
+</body>
+</html>
