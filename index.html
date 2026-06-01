@@ -24,9 +24,9 @@
     
     --bg: #F7F4F0;
     --white: #FFFFFF;
-    --text: #2E2E2E;
-    --text-muted: #7A7068;
-    --border: #E0D8CE;
+    --text: #1A1A1A; /* Escurecido para melhor leitura geral */
+    --text-muted: #3D3530; /* Escurecido (Antigo #7A7068 era muito claro) */
+    --border: #CBBFB2; /* Borda levemente mais visível */
     --card-radius: 16px;
     --transition: 0.25s ease;
     --gold: #B8986A;
@@ -39,8 +39,8 @@
     --bg: #121212;
     --white: #1E1E1E;
     --text: #F5F5F5;
-    --text-muted: #A0968E;
-    --border: #333333;
+    --text-muted: #C5BBB4; /* Mais claro no modo dark para dar contraste */
+    --border: #444444;
     --beige-light: #2A2621;
     --gold-dark: #D4AF37;
     --fade-color: rgba(18, 18, 18, 1);
@@ -246,7 +246,7 @@
     color: var(--text-muted);
     font-family: 'DM Sans', sans-serif;
     font-size: 13px;
-    font-weight: 500;
+    font-weight: 600; /* Negrito adicionado nas categorias da barra superior */
     cursor: pointer;
     border-bottom: 2px solid transparent;
     transition: var(--transition);
@@ -254,7 +254,7 @@
   }
 
   .cat-btn:hover { color: var(--text); }
-  .cat-btn.active { color: var(--text); border-bottom-color: var(--gold); font-weight: 600; }
+  .cat-btn.active { color: var(--text); border-bottom-color: var(--gold); font-weight: 700; }
 
   .cat-btn:last-child {
     padding-right: 50px;
@@ -267,7 +267,7 @@
     font-size: 11px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--text-muted);
+    color: var(--text);
     margin-bottom: 24px;
     display: flex;
     align-items: center;
@@ -342,13 +342,18 @@
     display: flex;
     gap: 5px;
     z-index: 2;
+    max-width: 90%;
+    overflow-x: auto;
+    scrollbar-width: none;
   }
+  .gallery-dots::-webkit-scrollbar { display: none; }
 
   .gallery-dot {
     width: 6px; height: 6px;
     border-radius: 50%;
     background: rgba(255,255,255,0.5);
     cursor: pointer;
+    flex-shrink: 0;
     transition: background var(--transition), transform var(--transition);
   }
 
@@ -425,12 +430,12 @@
 
   /* ── CARD — INFO ── */
   .card-body { padding: 18px 20px 14px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
-  .card-category { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); font-weight: 500; }
+  .card-category { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text); font-weight: 700; } /* Escurecido e com mais peso */
   
   /* Atualizada para Slab Serif (Arvo) */
   .card-name { font-family: 'Arvo', serif; font-size: 18px; font-weight: 700; color: var(--text); line-height: 1.3; }
   
-  .card-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; flex: 1; }
+  .card-desc font-size: 13px; color: var(--text-soft); line-height: 1.5; flex: 1; 
 
   /* SELETORES DE TAMANHO E COR NO CARD */
   .product-selectors {
@@ -442,9 +447,9 @@
     padding-top: 10px;
   }
   .selector-label {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 700; /* Mais visível */
+    color: var(--text); /* Texto da etiqueta "Tamanho/Cor" muito mais escuro */
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
@@ -460,14 +465,14 @@
   }
   
   .size-option {
-    border: 1px solid var(--border);
+    border: 1.5px solid var(--text); /* Borda padrão mais escura */
     padding: 4px 10px;
     font-size: 12px;
     border-radius: 6px;
     background: var(--white);
-    color: var(--text);
+    color: var(--text); /* Letra interna mais escura */
     cursor: pointer;
-    font-weight: 500;
+    font-weight: 700; /* Texto do tamanho em negrito */
     transition: var(--transition);
   }
   .size-option.selected {
@@ -486,21 +491,55 @@
     height: 22px;
     border-radius: 50%;
     cursor: pointer;
-    /* Adicionada borda fina padrão ao redor de todas as cores */
-    border: 1px solid var(--border); 
+    border: 2px solid var(--text-muted); /* Borda ao redor das cores visível */
     transition: var(--transition);
     position: relative;
   }
   .color-selector-dot.selected {
-    border-color: var(--gold);
+    border-color: var(--preto);
     border-width: 2px;
     transform: scale(1.15);
   }
 
+  /* ── ESTILIZAÇÃO DO BOTÃO TABELA DE MEDIDAS (MUITO MAIS CHAMATIVO NO CARD) ── */
+  .btn-tabela-card {
+    background: var(--gold);
+    border: 1px solid var(--beige-dark);
+    color: var(--preto);
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 12px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(184, 152, 106, 0.2);
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .btn-tabela-card:hover {
+    background: var(--preto);
+    color: var(--gold);
+    border-color: var(--gold);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+  }
+  [data-theme="dark"] .btn-tabela-card {
+    background: var(--beige-light);
+    color: var(--preto);
+  }
+  [data-theme="dark"] .btn-tabela-card:hover {
+    background: var(--gold);
+    color: var(--preto);
+  }
+
   /* ── CARD — CORES ANTIGAS (INFO) ── */
   .card-colors { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
-  .card-colors-label { font-size: 11px; color: var(--text-muted); font-weight: 400; }
-  .color-dot { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.1); display: inline-block; }
+  .card-colors-label { font-size: 11px; color: var(--text); font-weight: 700; } /* Escurecido */
+  .color-dot { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid rgba(0,0,0,0.2); display: inline-block; }
   
   .dot-beige { background: #C8B89A; }
   .dot-preto { background: #1A1A1A; }
@@ -511,23 +550,22 @@
 
   /* ── CARD — PREÇO ── */
   .card-footer { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px 18px; border-top: 1px solid var(--border); background: rgba(0,0,0,0.02); transition: background var(--transition), border-color var(--transition); }
-  .price-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 2px; }
-  .price-value { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; color: var(--text); }
+  .price-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text); font-weight: 700; margin-bottom: 2px; } /* Label "PREÇO" escurecida */
+  .price-value { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 700; color: var(--text); } /* Valor do preço maior e mais escuro */
   
   /* Estilos do preço antigo rasurado */
-  .price-old { font-size: 13px; text-decoration: line-through; color: var(--text-muted); font-weight: 400; margin-bottom: -2px; }
+  .price-old { font-size: 13px; text-decoration: line-through; color: var(--text-muted); font-weight: 600; margin-bottom: -2px; }
 
   .btn-pedir {
     background: var(--text); color: var(--white); border: none; border-radius: 50px; 
-    /* Reduzido o padding interno e o tamanho do botão */
     padding: 8px 14px;
     font-family: 'DM Sans', sans-serif; 
-    font-size: 11px; /* Fonte levemente menor */
+    font-size: 11px;
     font-weight: 600; cursor: pointer; transition: var(--transition);
     display: flex; align-items: center; gap: 6px; text-decoration: none;
   }
   .btn-pedir:hover { background: var(--gold); color: var(--preto); }
-  .btn-pedir svg { width: 12px; height: 12px; fill: currentColor; } /* Ícone levemente menor */
+  .btn-pedir svg { width: 12px; height: 12px; fill: currentColor; }
 
   /* Estilos de Placas Modificados para Dark Mode */
   .card.card-placa-bp .card-gallery { background: #1A1A1A; }
@@ -843,6 +881,7 @@
     <h2>Seu Carrinho</h2>
     <button class="cart-close-btn" id="cartClose">&times;</button>
   </div>
+
   <div class="cart-body" id="cartItemsContainer">
     <div class="cart-empty-msg">Seu carrinho está vazio.</div>
   </div>
@@ -896,6 +935,7 @@ let globalProdutos = [];
 let currentModalImages = [];
 let currentModalIndex = 0;
 let carrinho = [];
+let urlTabelaMedidas = ''; 
 
 // Mapeamento de cores hexadecimais internas para os seletores
 const CORES_MAPA = {
@@ -938,13 +978,18 @@ function parseCSV(text) {
       if (headerName.includes('whatsapp_breno')) cleanKey = 'whatsapp_breno';
       if (headerName.includes('desconto')) cleanKey = 'desconto';
       if (headerName.includes('status') || headerName.includes('ativo') || headerName.includes('ativar')) cleanKey = 'status';
-      if (headerName.includes('tamanho')) cleanKey = 'tamanho'; // Captura os tamanhos informados na planilha
+      if (headerName.includes('tamanho')) cleanKey = 'tamanho'; 
+      if (headerName.includes('tabela_medidas') || headerName.includes('tabelademedidas')) cleanKey = 'tabela_medidas'; 
       
       rowObj[cleanKey] = rawVal;
     });
     
+    if (rowObj.tabela_medidas && !urlTabelaMedidas) {
+      urlTabelaMedidas = rowObj.tabela_medidas.trim();
+    }
+    
     const fotos = [];
-    for (let i = 1; i <= 12; i++) {
+    for (let i = 1; i <= 20; i++) {
       if (rowObj[`foto${i}`]) fotos.push(rowObj[`foto${i}`]);
     }
     
@@ -977,8 +1022,7 @@ function parseCSV(text) {
       }
     }
     
-    // Converte a string de tamanhos (Ex: "P, M, G") em um Array limpo
-    let listaTamanhos = ['P', 'M', 'G']; // Fallback padrão caso a coluna esteja vazia
+    let listaTamanhos = ['P', 'M', 'G']; 
     if (rowObj.tamanho) {
       listaTamanhos = rowObj.tamanho.split(',').map(t => t.trim().toUpperCase()).filter(t => t.length > 0);
     }
@@ -993,10 +1037,11 @@ function parseCSV(text) {
       precoComDesconto: precoComDescontoFormatado,
       desconto: porcentagemDesconto,
       fotos: fotos,
-      tamanhos: listaTamanhos, // Adicionado ao objeto do produto
+      tamanhos: listaTamanhos, 
       whatsapp_ricardo: rowObj.whatsapp_ricardo || DEFAULT_WPP.Ricardo,
       whatsapp_breno: rowObj.whatsapp_breno || DEFAULT_WPP.Breno,
-      status: (rowObj.status || '').toLowerCase().trim()
+      status: (rowObj.status || '').toLowerCase().trim(),
+      tabela_medidas: rowObj.tabela_medidas ? rowObj.tabela_medidas.trim() : ''
     };
   }).filter(p => p.nome && p.status !== 'desativado' && p.status !== 'não' && p.status !== 'nao' && p.status !== '0' && p.status !== 'false');
 }
@@ -1048,7 +1093,6 @@ function buildColors(tipoPlaca) {
   return '';
 }
 
-// Atualizada para gerar botões com base na lista de tamanhos vinda da Planilha
 function buildInteractiveSelectors(tipoPlaca, produtoId, tamanhos) {
   let htmlTamanhos = tamanhos.map((t, idx) => 
     `<button class="size-option ${idx === 0 ? 'selected' : ''}" data-size="${t}">${t}</button>`
@@ -1093,6 +1137,12 @@ function renderCard(p) {
       <div class="price-value">${p.preco || '<span class="price-loading">consultar</span>'}</div>
     `;
   }
+
+  const showBtnMedidas = p.tabela_medidas ? 'inline-flex' : 'none';
+  const botaoMedidasCard = `<button class="btn-tabela-card" style="display:${showBtnMedidas};">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+      Tabela de Medidas
+     </button>`;
   
   return `
   <div class="card ${extraClass}" data-cat="${p.categoria}" data-id="${p.id}">
@@ -1107,6 +1157,7 @@ function renderCard(p) {
       ${p.descricao ? `<div class="card-desc">${p.descricao}</div>` : ''}
       ${buildColors(p.tipo_placa)}
       ${buildInteractiveSelectors(p.tipo_placa, p.id, p.tamanhos)}
+      ${botaoMedidasCard}
     </div>
     <div class="card-footer">
       <div class="price-block">
@@ -1128,6 +1179,23 @@ function initCardEvents() {
   const grids = document.getElementById('cardsGrid');
 
   grids.addEventListener('click', (e) => {
+    if (e.target.classList.contains('btn-tabela-card') || e.target.closest('.btn-tabela-card')) {
+      e.preventDefault(); e.stopPropagation();
+      const card = e.target.closest('.card');
+      const pid = card.getAttribute('data-id');
+      const produto = globalProdutos.find(p => p.id === pid);
+      
+      if (!produto || !produto.tabela_medidas) return;
+      
+      const modalImg = document.getElementById('modalImg');
+      modalImg.src = produto.tabela_medidas;
+      
+      document.getElementById('modalPrev').style.display = 'none';
+      document.getElementById('modalNext').style.display = 'none';
+      document.getElementById('imageModal').classList.add('active');
+      return;
+    }
+
     if (e.target.classList.contains('gallery-arrow')) {
       e.preventDefault(); e.stopPropagation();
       const dir = parseInt(e.target.getAttribute('data-dir'));
@@ -1419,6 +1487,29 @@ async function loadCatalog() {
     if (!response.ok) throw new Error('Erro ao carregar dados da planilha.');
     
     const csvText = await response.text();
+
+    (function preCaptureTabela(text) {
+      const lines = text.trim().split('\n');
+      if (lines.length < 2) return;
+      const separator = lines[0].includes(';') ? ';' : ',';
+      const headers = lines[0].split(separator).map(h => h.trim().replace(/^"|"$/g, '').toLowerCase());
+      const tabelaIdx = headers.findIndex(h => h.includes('tabela_medidas') || h.includes('tabelademedidas'));
+      if (tabelaIdx === -1) return;
+      for (let i = 1; i < lines.length; i++) {
+        const cols = [];
+        let cur = '', inQ = false;
+        for (let j = 0; j < lines[i].length; j++) {
+          const c = lines[i][j];
+          if (c === '"') { inQ = !inQ; continue; }
+          if (c === separator && !inQ) { cols.push(cur); cur = ''; continue; }
+          cur += c;
+        }
+        cols.push(cur);
+        const val = (cols[tabelaIdx] || '').trim().replace(/^"|"$/g, '').trim();
+        if (val) { urlTabelaMedidas = val; break; }
+      }
+    })(csvText);
+
     globalProdutos = parseCSV(csvText);
     
     renderProdutos(globalProdutos, 'todos');
