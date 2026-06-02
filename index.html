@@ -359,33 +359,57 @@
 
   .gallery-dot.active { background: #fff; transform: scale(1.3); }
 
+  /* ── CONTAINER REESTILIZADO DAS SETAS DO CARD (SOFISTICADO) ── */
   .gallery-arrows {
     position: absolute;
     inset: 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 8px;
+    padding: 0 14px;
     opacity: 0;
-    transition: opacity var(--transition);
+    pointer-events: none; /* Deixa cliques passarem para a foto fora das setas */
+    transition: opacity 0.3s ease;
   }
 
-  .card-gallery:hover .gallery-arrows { opacity: 1; }
+  /* Faz as setas aparecerem suavemente ao passar o mouse no card */
+  .card-gallery:hover .gallery-arrows { 
+    opacity: 1; 
+  }
 
+  /* Botão de seta minimalista premium */
   .gallery-arrow {
-    background: rgba(255,255,255,0.85);
+    background: transparent;
     border: none;
-    border-radius: 50%;
-    width: 28px; height: 28px;
+    width: 32px; 
+    height: 32px;
     cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px;
-    color: var(--preto);
-    transition: background var(--transition);
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    color: #FFFFFF;
+    filter: drop-shadow(0px 2px 5px rgba(0, 0, 0, 0.4)); /* Garante leitura sobre fotos claras */
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.25s ease;
     z-index: 3;
+    pointer-events: auto; /* Reativa os cliques apenas na seta */
+    padding: 0;
   }
 
-  .gallery-arrow:hover { background: #fff; }
+  /* Micro-interação elegante ao focar nas setas */
+  .gallery-arrow:hover { 
+    color: var(--gold);
+    transform: scale(1.18);
+  }
+  
+  .gallery-arrow svg {
+    width: 24px;
+    height: 24px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
 
   .card-no-photo { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--text-muted); font-size: 13px; cursor: default; }
   .card-no-photo svg { opacity: 0.35; }
@@ -480,19 +504,32 @@
     color: var(--white);
     border-color: var(--preto);
   }
+  
+  /* ── BOLINHA DE COR BASE ── */
   .color-selector-dot {
     width: 22px;
     height: 22px;
     border-radius: 50%;
     cursor: pointer;
-    border: 2px solid var(--text-muted); /* Borda ao redor das cores visível */
-    transition: var(--transition);
+    border: 2px solid var(--border);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
     position: relative;
+    -webkit-appearance: none;
+    appearance: none;
   }
+  
+  /* ── EFEITO DE BRILHO (GLOW) INTENSO PARA A BOLINHA SELECIONADA ── */
   .color-selector-dot.selected {
-    border-color: var(--preto);
-    border-width: 2px;
-    transform: scale(1.15);
+    transform: scale(1.22);
+    border-color: #ffffff !important; /* Borda interna branca para destacar do glow */
+    box-shadow: 0 0 14px 4px var(--glow-color, rgba(200, 184, 154, 0.8)), 
+                0 0 4px 1px var(--glow-color, rgba(200, 184, 154, 0.6));
+    z-index: 5;
+  }
+  
+  /* Garante uma borda escura sutil no modo escuro se a cor for muito clara */
+  [data-theme="dark"] .color-selector-dot.selected {
+    border-color: #ffffff !important;
   }
 
   /* ── ESTILIZAÇÃO DO BOTÃO TABELA DE MEDIDAS (MUITO MAIS CHAMATIVO NO CARD) ── */
@@ -709,6 +746,11 @@
     color: var(--text-muted);
     margin-top: 40px;
   }
+  .cart-empty-msg {
+    text-align: center;
+    color: var(--text-muted);
+    margin-top: 40px;
+  }
   .cart-item {
     display: flex;
     gap: 12px;
@@ -815,6 +857,10 @@
     .hero h1 { font-size: 32px; }
     .cart-toggle-btn span { display: none; }
     .cart-toggle-btn { padding: 10px; }
+    
+    /* Exibe as setas sempre em celulares para facilitar navegação por toque */
+    .gallery-arrows { opacity: 1 !important; padding: 0 6px; }
+    .gallery-arrow { width: 28px; height: 28px; }
   }
 </style>
 </head>
@@ -1040,6 +1086,7 @@ function parseCSV(text) {
   }).filter(p => p.nome && p.status !== 'desativado' && p.status !== 'não' && p.status !== 'nao' && p.status !== '0' && p.status !== 'false');
 }
 
+/* FUNÇÃO ATUALIZADA: Agora as setas são geradas com ícones SVG sofisticados e minimalistas */
 function buildGallery(fotos) {
   const fotosValidas = fotos.map(f => f.trim()).filter(f => f.length > 0);
 
@@ -1058,7 +1105,17 @@ function buildGallery(fotos) {
   ).join('');
 
   const dots = fotosValidas.length > 1 ? `<div class="gallery-dots">${fotosValidas.map((_,i) => `<div class="gallery-dot ${i===0?'active':''}" data-idx="${i}"></div>`).join('')}</div>` : '';
-  const arrows = fotosValidas.length > 1 ? `<div class="gallery-arrows"><button class="gallery-arrow" data-dir="-1">&#8592;</button><button class="gallery-arrow" data-dir="1">&#8594;</button></div>` : '';
+  
+  // Setas em formato SVG Chevron Minimalistas substituindo o padrão antigo
+  const arrows = fotosValidas.length > 1 ? `
+    <div class="gallery-arrows">
+      <button class="gallery-arrow" data-dir="-1" aria-label="Foto Anterior">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <button class="gallery-arrow" data-dir="1" aria-label="Próxima Foto">
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+    </div>` : '';
   
   return `<div class="card-gallery">${imgs}${dots}${arrows}</div>`;
 }
@@ -1100,7 +1157,7 @@ function buildInteractiveSelectors(tipoPlaca, produtoId, tamanhos) {
 
   let htmlCores = coresListadas.map((c, idx) => {
     const hex = CORES_MAPA[c] || '#C8B89A';
-    return `<div class="color-selector-dot ${idx === 0 ? 'selected' : ''}" data-color="${c}" style="background-color: ${hex} !important; -webkit-print-color-adjust: exact; color-adjust: exact;" title="${c}"></div>`;
+    return `<div class="color-selector-dot ${idx === 0 ? 'selected' : ''}" data-color="${c}" style="background-color: ${hex} !important; --glow-color: ${hex}; -webkit-print-color-adjust: exact; color-adjust: exact;" title="${c}"></div>`;
   }).join('');
 
   return `
@@ -1190,10 +1247,12 @@ function initCardEvents() {
       return;
     }
 
-    if (e.target.classList.contains('gallery-arrow')) {
+    /* Suporte a cliques nas novas setas ou nos SVGs contidos nelas */
+    if (e.target.classList.contains('gallery-arrow') || e.target.closest('.gallery-arrow')) {
       e.preventDefault(); e.stopPropagation();
-      const dir = parseInt(e.target.getAttribute('data-dir'));
-      const gallery = e.target.closest('.card-gallery');
+      const btn = e.target.classList.contains('gallery-arrow') ? e.target : e.target.closest('.gallery-arrow');
+      const dir = parseInt(btn.getAttribute('data-dir'));
+      const gallery = btn.closest('.card-gallery');
       const imgs = Array.from(gallery.querySelectorAll('img'));
       const dots = Array.from(gallery.querySelectorAll('.gallery-dot'));
       
@@ -1257,7 +1316,7 @@ function initCardEvents() {
       const produtoId = card.getAttribute('data-id');
       const produto = globalProdutos.find(p => p.id === produtoId);
       
-      if (produto && produto.fotos.length > 0) {
+      if (produto && p.fotos.length > 0) {
         currentModalImages = produto.fotos.map(f => f.trim()).filter(f => f.length > 0);
         const activeImg = clickedGallery.querySelector('img.active');
         const activeSrc = activeImg ? activeImg.getAttribute('src') : currentModalImages[0];
@@ -1308,7 +1367,6 @@ function adicionarAoCarrinho(id, tamanho, cor) {
   cartSidebar.classList.add('open');
 }
 
-// Alterado o escopo da função para torná-la global para corresponder ao HTML gerado inline
 window.alterarQtd = function(index, precoAlterado) {
   carrinho[index].qtd += precoAlterado;
   if (carrinho[index].qtd <= 0) {
