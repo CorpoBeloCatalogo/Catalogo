@@ -505,6 +505,12 @@
     border-color: var(--preto);
   }
   
+  /* ── ALTERAÇÃO SOLICITADA: TAMANHO SELECIONADO NO MODO ESCURO FICA COM TEXTO E BORDA BRANCA ── */
+  [data-theme="dark"] .size-option.selected {
+    color: #ffffff !important;
+    border-color: #ffffff !important;
+  }
+  
   /* ── BOLINHA DE COR BASE ── */
   .color-selector-dot {
     width: 22px;
@@ -527,7 +533,6 @@
     z-index: 5;
   }
   
-  /* ── ALTERAÇÃO: GARANTE BORDA E AURA BRANCA PREMIUM NO MODO ESCURO ── */
   [data-theme="dark"] .color-selector-dot.selected {
     border-color: #ffffff !important;
     --glow-color: rgba(255, 255, 255, 0.5) !important;
