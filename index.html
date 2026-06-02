@@ -718,7 +718,7 @@
     z-index: 400;
     display: flex;
     flex-direction: column;
-    transition: right 0.3s ease;
+    transition: right 0.3s ease, background var(--transition), border-color var(--transition);
   }
   .cart-sidebar.open {
     right: 0;
@@ -736,13 +736,43 @@
     font-size: 24px;
     font-weight: 500;
   }
+  
+  /* ── AJUSTE PREMIUM DO BOTÃO FECHAR (X) DO CARRINHO ── */
   .cart-close-btn {
-    background: none;
-    border: none;
-    color: var(--white);
-    font-size: 28px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(200, 184, 154, 0.3);
+    color: #FFFFFF;
+    font-size: 24px;
+    line-height: 1;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    padding-bottom: 4px; /* Ajuste óptico de alinhamento vertical do caractere multiplicador × */
   }
+  .cart-close-btn:hover {
+    background: var(--vermelho);
+    border-color: var(--vermelho);
+    color: #FFFFFF;
+    transform: scale(1.08);
+  }
+  
+  /* Destaque adicional do botão fechar no Modo Dark */
+  [data-theme="dark"] .cart-close-btn {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+  }
+  [data-theme="dark"] .cart-close-btn:hover {
+    background: var(--vermelho);
+    border-color: var(--vermelho);
+    box-shadow: 0 0 12px rgba(198, 35, 51, 0.6);
+  }
+
   .cart-body {
     flex: 1;
     overflow-y: auto;
@@ -785,16 +815,38 @@
     align-items: center;
     gap: 8px;
   }
+  
+  /* ── BOTÕES DE QUANTIDADE DO CARRINHO ADAPTADOS AO DARK MODE ── */
   .qty-btn {
-    width: 24px;
-    height: 24px;
-    border: 1px solid var(--border);
+    width: 26px;
+    height: 26px;
+    border: 1.5px solid var(--text);
     background: var(--white);
     color: var(--text);
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
-    font-weight: bold;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: var(--transition);
   }
+  .qty-btn:hover {
+    background: var(--text);
+    color: var(--white);
+  }
+  
+  [data-theme="dark"] .qty-btn {
+    border-color: #FFFFFF;
+    background: #121212;
+    color: #FFFFFF;
+  }
+  [data-theme="dark"] .qty-btn:hover {
+    background: #FFFFFF;
+    color: #121212;
+  }
+
   .cart-footer-panel {
     padding: 20px;
     border-top: 1px solid var(--border);
@@ -924,7 +976,7 @@
 <div class="cart-sidebar" id="cartSidebar">
   <div class="cart-header">
     <h2>Seu Carrinho</h2>
-    <button class="cart-close-btn" id="cartClose">&times;</button>
+    <button class="cart-close-btn" id="cartClose" aria-label="Fechar Carrinho">&times;</button>
   </div>
 
   <div class="cart-body" id="cartItemsContainer">
@@ -1312,7 +1364,6 @@ function initCardEvents() {
       return;
     }
 
-    // CORREÇÃO AQUI: Captura correta e abertura do modal ao clicar na imagem da galeria
     const clickedGallery = e.target.closest('.card-gallery');
     if (clickedGallery && !clickedGallery.classList.contains('card-no-photo')) {
       const card = clickedGallery.closest('.card');
