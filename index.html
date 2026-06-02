@@ -286,7 +286,7 @@
     margin: 0 auto 16px;
   }
 
-  @pragma spin { to { transform: rotate(360deg); } }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
   /* ── GRID DE CARDS ── */
   .cards-grid {
@@ -435,7 +435,7 @@
   /* Atualizada para Slab Serif (Arvo) */
   .card-name { font-family: 'Arvo', serif; font-size: 18px; font-weight: 700; color: var(--text); line-height: 1.3; }
   
-  .card-desc font-size: 13px; color: var(--text-soft); line-height: 1.5; flex: 1; 
+  .card-desc { font-size: 13px; color: var(--text-soft); line-height: 1.5; flex: 1; }
 
   /* SELETORES DE TAMANHO E COR NO CARD */
   .product-selectors {
@@ -480,7 +480,7 @@
     color: var(--white);
     border-color: var(--preto);
   }
-  [data-theme="dark"] .size-option.selected {
+  .size-option.selected {
     background: var(--gold);
     color: var(--preto);
     border-color: var(--gold);
@@ -528,16 +528,12 @@
     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
   }
   [data-theme="dark"] .btn-tabela-card {
-    background: var(--gold);
+    background: var(--beige-light);
     color: var(--preto);
-    border-color: var(--gold);
-    box-shadow: 0 4px 10px rgba(184, 152, 106, 0.4);
   }
   [data-theme="dark"] .btn-tabela-card:hover {
-    background: var(--preto);
-    color: var(--gold);
-    border-color: var(--gold);
-    box-shadow: 0 6px 14px rgba(184, 152, 106, 0.6);
+    background: var(--gold);
+    color: var(--preto);
   }
 
   /* ── CARD — CORES ANTIGAS (INFO) ── */
@@ -545,12 +541,16 @@
   .card-colors-label { font-size: 11px; color: var(--text); font-weight: 700; } /* Escurecido */
   .color-dot { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid rgba(0,0,0,0.2); display: inline-block; }
   
-  .dot-beige { background: #C8B89A; }
-  .dot-preto { background: #1A1A1A; }
-  .dot-azul-marinho { background: #0F1E36; }
-  .dot-pink { background: #FF69B4; }
-  .dot-vermelho { background: #C82333; }
-  .dot-azul { background: #2B4A7A; }
+  .dot-beige { background: #C8B89A !important; }
+  .dot-preto { background: #1A1A1A !important; }
+  .dot-azul-marinho { background: #0F1E36 !important; }
+  .dot-pink { background: #FF69B4 !important; }
+  .dot-vermelho { background: #C82333 !important; }
+  .dot-azul { background: #2B4A7A !important; }
+
+  [data-theme="dark"] .color-dot {
+    border-color: rgba(255, 255, 255, 0.3);
+  }
 
   /* ── CARD — PREÇO ── */
   .card-footer { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px 18px; border-top: 1px solid var(--border); background: rgba(0,0,0,0.02); transition: background var(--transition), border-color var(--transition); }
