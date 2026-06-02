@@ -24,9 +24,9 @@
     
     --bg: #F7F4F0;
     --white: #FFFFFF;
-    --text: #1A1A1A; 
-    --text-muted: #3D3530; 
-    --border: #CBBFB2; 
+    --text: #1A1A1A; /* Escurecido para melhor leitura geral */
+    --text-muted: #3D3530; /* Escurecido (Antigo #7A7068 era muito claro) */
+    --border: #CBBFB2; /* Borda levemente mais visível */
     --card-radius: 16px;
     --transition: 0.25s ease;
     --gold: #B8986A;
@@ -39,7 +39,7 @@
     --bg: #121212;
     --white: #1E1E1E;
     --text: #F5F5F5;
-    --text-muted: #C5BBB4; 
+    --text-muted: #C5BBB4; /* Mais claro no modo dark para dar contraste */
     --border: #444444;
     --beige-light: #2A2621;
     --gold-dark: #D4AF37;
@@ -94,6 +94,7 @@
     transition: color var(--transition);
   }
 
+  /* Deixa o "Belo" dourado no modo Dark */
   [data-theme="dark"] .logo span {
     color: var(--gold-dark);
   }
@@ -160,9 +161,10 @@
     fill: currentColor;
   }
 
+  /* Controla qual ícone aparece */
   .theme-toggle-btn .sun-icon { display: none; }
   [data-theme="dark"] .theme-toggle-btn .moon-icon { display: none; }
-  [data-theme="dark"] .theme-toggle-btn .sun-icon { block; }
+  [data-theme="dark"] .theme-toggle-btn .sun-icon { display: block; }
 
   /* ── HERO ── */
   .hero {
@@ -195,6 +197,7 @@
     transition: color var(--transition);
   }
 
+  /* Deixa a frase principal dourada no modo Dark */
   [data-theme="dark"] .hero h1 {
     color: var(--gold-dark);
   }
@@ -202,7 +205,7 @@
   .hero h1 em { font-style: italic; color: var(--beige); }
   .hero p { margin-top: 16px; color: rgba(255,255,255,0.5); font-size: 15px; font-weight: 300; }
 
-  /* ── BARRA DE CATEGORIAS ── */
+  /* ── CONTÊINER DA BARRA DE CATEGORIAS (EFEITO FADE) ── */
   .categories-wrapper {
     position: sticky;
     top: 72px;
@@ -243,7 +246,7 @@
     color: var(--text-muted);
     font-family: 'DM Sans', sans-serif;
     font-size: 13px;
-    font-weight: 600; 
+    font-weight: 600; /* Negrito adicionado nas categorias da barra superior */
     cursor: pointer;
     border-bottom: 2px solid transparent;
     transition: var(--transition);
@@ -252,7 +255,10 @@
 
   .cat-btn:hover { color: var(--text); }
   .cat-btn.active { color: var(--text); border-bottom-color: var(--gold); font-weight: 700; }
-  .cat-btn:last-child { padding-right: 50px; }
+
+  .cat-btn:last-child {
+    padding-right: 50px;
+  }
 
   /* ── MAIN CONTENT ── */
   main { max-width: 1280px; margin: 0 auto; padding: 48px 2rem 80px; }
@@ -280,17 +286,16 @@
     margin: 0 auto 16px;
   }
 
-  @keyframes spin { to { transform: rotate(360deg); } }
+  @pragma spin { to { transform: rotate(360deg); } }
 
-  /* ── GRID DE CARDS ALINHADOS ── */
+  /* ── GRID DE CARDS ── */
   .cards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 24px;
-    align-items: stretch; /* Garante que os cards vizinhos tenham alturas iguais na mesma linha */
   }
 
-  /* ── CARD BASE UNIFICADO ── */
+  /* ── CARD BASE ── */
   .card {
     background: var(--white);
     border-radius: var(--card-radius);
@@ -298,8 +303,7 @@
     overflow: hidden;
     transition: transform var(--transition), box-shadow var(--transition), background var(--transition), border-color var(--transition);
     display: flex;
-    flex-direction: column; /* Coloca os elementos um embaixo do outro */
-    height: 100%; /* Força o card a esticar até a altura total máxima da linha */
+    flex-direction: column;
   }
 
   .card:hover {
@@ -307,7 +311,7 @@
     box-shadow: 0 16px 40px rgba(0,0,0,0.15);
   }
 
-  /* ── CARD — GALERIA ── */
+  /* ── CARD — GALERIA DE FOTOS ── */
   .card-gallery {
     position: relative;
     width: 100%;
@@ -382,10 +386,11 @@
   }
 
   .gallery-arrow:hover { background: #fff; }
+
   .card-no-photo { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--text-muted); font-size: 13px; cursor: default; }
   .card-no-photo svg { opacity: 0.35; }
 
-  /* ── BADGES ── */
+  /* ── CARD — BADGES ADAPTÁVEIS ── */
   .card-badge {
     position: absolute;
     top: 12px;
@@ -399,6 +404,7 @@
     z-index: 4;
   }
 
+  /* Badge de Desconto Dinâmica */
   .badge-discount {
     position: absolute;
     top: 12px;
@@ -422,20 +428,16 @@
   .badge-vermelho { background: var(--vermelho); color: #fff; }
   .badge-azul { background: var(--azul); color: #D6E4F5; }
 
-  /* ── CARD BODY (FLEX PARA ESPAÇAMENTO REPARTIDO EQUALITARIAMENTE) ── */
-  .card-body { 
-    padding: 18px 20px 14px; 
-    flex: 1; /* Faz esse bloco ocupar todo o espaço central vago */
-    display: flex; 
-    flex-direction: column; 
-    gap: 8px; 
-  }
+  /* ── CARD — INFO ── */
+  .card-body { padding: 18px 20px 14px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+  .card-category { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text); font-weight: 700; } /* Escurecido e com mais peso */
   
-  .card-category { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text); font-weight: 700; } 
+  /* Atualizada para Slab Serif (Arvo) */
   .card-name { font-family: 'Arvo', serif; font-size: 18px; font-weight: 700; color: var(--text); line-height: 1.3; }
-  .card-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 4px; }
+  
+  .card-desc font-size: 13px; color: var(--text-soft); line-height: 1.5; flex: 1; 
 
-  /* SELETORES */
+  /* SELETORES DE TAMANHO E COR NO CARD */
   .product-selectors {
     margin-top: 8px;
     display: flex;
@@ -446,8 +448,8 @@
   }
   .selector-label {
     font-size: 12px;
-    font-weight: 700; 
-    color: var(--text); 
+    font-weight: 700; /* Mais visível */
+    color: var(--text); /* Texto da etiqueta "Tamanho/Cor" muito mais escuro */
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
@@ -457,17 +459,20 @@
     gap: 6px;
   }
   
-  .color-selector-wrapper { margin-top: 4px; }
+  /* Empurra o contêiner de cores um pouco mais para baixo */
+  .color-selector-wrapper {
+    margin-top: 12px;
+  }
   
   .size-option {
-    border: 1.5px solid var(--text); 
+    border: 1.5px solid var(--text); /* Borda padrão mais escura */
     padding: 4px 10px;
     font-size: 12px;
     border-radius: 6px;
     background: var(--white);
-    color: var(--text); 
+    color: var(--text); /* Letra interna mais escura */
     cursor: pointer;
-    font-weight: 700; 
+    font-weight: 700; /* Texto do tamanho em negrito */
     transition: var(--transition);
   }
   .size-option.selected {
@@ -486,7 +491,7 @@
     height: 22px;
     border-radius: 50%;
     cursor: pointer;
-    border: 2px solid var(--text-muted); 
+    border: 2px solid var(--text-muted); /* Borda ao redor das cores visível */
     transition: var(--transition);
     position: relative;
   }
@@ -496,7 +501,7 @@
     transform: scale(1.15);
   }
 
-  /* ── BOTÃO TABELA DE MEDIDAS (FIXADO PERFEITAMENTE NA BASE DO CARD BODY) ── */
+  /* ── ESTILIZAÇÃO DO BOTÃO TABELA DE MEDIDAS (MUITO MAIS CHAMATIVO NO CARD) ── */
   .btn-tabela-card {
     background: var(--gold);
     border: 1px solid var(--beige-dark);
@@ -505,6 +510,7 @@
     border-radius: 8px;
     font-size: 13px;
     font-weight: 700;
+    margin-top: 12px;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
@@ -513,8 +519,6 @@
     width: 100%;
     box-shadow: 0 4px 10px rgba(184, 152, 106, 0.2);
     transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
-    
-    margin-top: auto; /* Truque mestre: joga o botão sempre para o rodapé exato da área body! */
   }
   .btn-tabela-card:hover {
     background: var(--preto);
@@ -524,16 +528,21 @@
     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
   }
   [data-theme="dark"] .btn-tabela-card {
-    background: var(--beige-light);
-    color: var(--preto);
-  }
-  [data-theme="dark"] .btn-tabela-card:hover {
     background: var(--gold);
     color: var(--preto);
+    border-color: var(--gold);
+    box-shadow: 0 4px 10px rgba(184, 152, 106, 0.4);
+  }
+  [data-theme="dark"] .btn-tabela-card:hover {
+    background: var(--preto);
+    color: var(--gold);
+    border-color: var(--gold);
+    box-shadow: 0 6px 14px rgba(184, 152, 106, 0.6);
   }
 
+  /* ── CARD — CORES ANTIGAS (INFO) ── */
   .card-colors { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
-  .card-colors-label { font-size: 11px; color: var(--text); font-weight: 700; } 
+  .card-colors-label { font-size: 11px; color: var(--text); font-weight: 700; } /* Escurecido */
   .color-dot { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid rgba(0,0,0,0.2); display: inline-block; }
   
   .dot-beige { background: #C8B89A; }
@@ -543,18 +552,12 @@
   .dot-vermelho { background: #C82333; }
   .dot-azul { background: #2B4A7A; }
 
-  /* ── CARD FOOTER — TAMBÉM ALINHADO EMBAIXO ── */
-  .card-footer { 
-    display: flex; 
-    align-items: center; 
-    justify-content: space-between; 
-    padding: 14px 20px 18px; 
-    border-top: 1px solid var(--border); 
-    background: rgba(0,0,0,0.02); 
-    transition: background var(--transition), border-color var(--transition); 
-  }
-  .price-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text); font-weight: 700; margin-bottom: 2px; } 
-  .price-value { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 700; color: var(--text); } 
+  /* ── CARD — PREÇO ── */
+  .card-footer { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px 18px; border-top: 1px solid var(--border); background: rgba(0,0,0,0.02); transition: background var(--transition), border-color var(--transition); }
+  .price-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text); font-weight: 700; margin-bottom: 2px; } /* Label "PREÇO" escurecida */
+  .price-value { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 700; color: var(--text); } /* Valor do preço maior e mais escuro */
+  
+  /* Estilos do preço antigo rasurado */
   .price-old { font-size: 13px; text-decoration: line-through; color: var(--text-muted); font-weight: 600; margin-bottom: -2px; }
 
   .btn-pedir {
@@ -568,7 +571,7 @@
   .btn-pedir:hover { background: var(--gold); color: var(--preto); }
   .btn-pedir svg { width: 12px; height: 12px; fill: currentColor; }
 
-  /* Modificadores de Placas */
+  /* Estilos de Placas Modificados para Dark Mode */
   .card.card-placa-bp .card-gallery { background: #1A1A1A; }
   .card.card-placa-bp { border-color: #333; }
   .card.card-placa-azul .card-gallery { background: var(--azul-dark); }
@@ -637,6 +640,7 @@
   }
   .image-modal-close:hover { background: rgba(255,255,255,0.4); }
 
+  /* Setas de navegação do Modal */
   .modal-arrow {
     position: absolute;
     top: 50%;
@@ -679,7 +683,9 @@
     flex-direction: column;
     transition: right 0.3s ease;
   }
-  .cart-sidebar.open { right: 0; }
+  .cart-sidebar.open {
+    right: 0;
+  }
   .cart-header {
     padding: 20px;
     background: var(--preto);
@@ -688,18 +694,70 @@
     justify-content: space-between;
     align-items: center;
   }
-  .cart-header h2 { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 500; }
-  .cart-close-btn { background: none; border: none; color: var(--white); font-size: 28px; cursor: pointer; }
-  .cart-body { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
-  .cart-empty-msg { text-align: center; color: var(--text-muted); margin-top: 40px; }
-  .cart-item { display: flex; gap: 12px; border-bottom: 1px solid var(--border); padding-bottom: 14px; align-items: center; }
-  .cart-item-info { flex: 1; }
-  .cart-item-title { font-weight: 600; font-size: 14px; }
-  .cart-item-meta { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-  .cart-item-price { font-weight: bold; font-size: 14px; margin-top: 4px; }
-  .cart-item-qty { display: flex; align-items: center; gap: 8px; }
-  .qty-btn { width: 24px; height: 24px; border: 1px solid var(--border); background: var(--white); color: var(--text); border-radius: 4px; cursor: pointer; font-weight: bold; }
-  
+  .cart-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 500;
+  }
+  .cart-close-btn {
+    background: none;
+    border: none;
+    color: var(--white);
+    font-size: 28px;
+    cursor: pointer;
+  }
+  .cart-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .cart-empty-msg {
+    text-align: center;
+    color: var(--text-muted);
+    margin-top: 40px;
+  }
+  .cart-item {
+    display: flex;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    align-items: center;
+  }
+  .cart-item-info {
+    flex: 1;
+  }
+  .cart-item-title {
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .cart-item-meta {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .cart-item-price {
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 4px;
+  }
+  .cart-item-qty {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .qty-btn {
+    width: 24px;
+    height: 24px;
+    border: 1px solid var(--border);
+    background: var(--white);
+    color: var(--text);
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+  }
   .cart-footer-panel {
     padding: 20px;
     border-top: 1px solid var(--border);
@@ -708,10 +766,25 @@
     flex-direction: column;
     gap: 12px;
   }
-  .cart-total-row { display: flex; justify-content: space-between; font-weight: bold; font-size: 16px; }
-  .wpp-checkout-container { display: flex; flex-direction: column; gap: 8px; }
-  .checkout-title { font-size: 11px; text-transform: uppercase; color: var(--text-muted); font-weight: 600; letter-spacing: 0.05em; text-align: center; }
-  
+  .cart-total-row {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: 16px;
+  }
+  .wpp-checkout-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .checkout-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-align: center;
+  }
   .btn-checkout {
     display: flex;
     align-items: center;
@@ -740,6 +813,7 @@
   footer { background: var(--preto); color: rgba(255,255,255,0.35); text-align: center; padding: 28px; font-size: 12px; letter-spacing: 0.05em; transition: background var(--transition); }
   footer strong { color: var(--beige); }
 
+  /* Mídia adaptada para total responsividade no Telefone */
   @media (max-width: 600px) {
     header { padding: 0 1rem; gap: 8px; }
     .hero { padding: 40px 1.25rem 32px; }
@@ -853,6 +927,7 @@ const DEFAULT_WPP = {
   Breno:   '5567993435284',
 };
 
+/* LÓGICA DE DARK/LIGHT MODE */
 const themeToggleBtn = document.getElementById('themeToggle');
 themeToggleBtn.addEventListener('click', () => {
   const currentTheme = document.body.getAttribute('data-theme');
@@ -866,6 +941,7 @@ let currentModalIndex = 0;
 let carrinho = [];
 let urlTabelaMedidas = ''; 
 
+// Mapeamento de cores hexadecimais internas para os seletores
 const CORES_MAPA = {
   'bege': '#C8B89A',
   'preto': '#1A1A1A',
@@ -1102,6 +1178,7 @@ function renderCard(p) {
   </div>`;
 }
 
+/* LÓGICA DE COMPORTAMENTO DOS CARDS */
 function initCardEvents() {
   const grids = document.getElementById('cardsGrid');
 
@@ -1204,6 +1281,7 @@ function initCardEvents() {
   });
 }
 
+/* LÓGICA DO MEU CARRINHO DE COMPRAS */
 const cartSidebar = document.getElementById('cartSidebar');
 const cartToggle = document.getElementById('cartToggle');
 const cartClose = document.getElementById('cartClose');
@@ -1311,6 +1389,8 @@ function configurarLinksCheckout(total) {
   document.getElementById('checkoutBreno').href = `https://wa.me/${numBreno}?text=${msgCodificada}`;
 }
 
+
+/* LÓGICA DO MODAL IMAGEM AMPLIFICA */
 const imageModal = document.getElementById('imageModal');
 const modalImg = document.getElementById('modalImg');
 const modalClose = document.getElementById('modalClose');
@@ -1362,6 +1442,7 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowRight') navigateModal(1);
 });
 
+/* FILTRAGEM E RENDERIZAÇÃO GERAL */
 function renderProdutos(produtos, filtro = 'todos') {
   const container = document.getElementById('cardsGrid');
   const sectionLabel = document.getElementById('sectionLabel');
@@ -1403,6 +1484,7 @@ function initCategoryFilter(produtos) {
   });
 }
 
+/* CARREGAMENTO INICIAL DATASOURCE */
 async function loadCatalog() {
   try {
     const response = await fetch(SHEET_CSV_URL);
