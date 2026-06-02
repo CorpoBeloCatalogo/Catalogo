@@ -499,15 +499,17 @@
     font-weight: 700; /* Texto do tamanho em negrito */
     transition: var(--transition);
   }
+
+  /* ── EFEITO DE SELEÇÃO NOS TAMANHOS (MODO CLARO E ESCURO) ── */
   .size-option.selected {
     background: var(--preto);
     color: var(--white);
     border-color: var(--preto);
   }
   
-  /* ── ALTERAÇÃO SOLICITADA: TAMANHO SELECIONADO NO MODO ESCURO FICA COM TEXTO E BORDA BRANCA ── */
   [data-theme="dark"] .size-option.selected {
-    color: #ffffff !important;
+    background: #ffffff !important;
+    color: #121212 !important;
     border-color: #ffffff !important;
   }
   
