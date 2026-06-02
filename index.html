@@ -746,11 +746,6 @@
     color: var(--text-muted);
     margin-top: 40px;
   }
-  .cart-empty-msg {
-    text-align: center;
-    color: var(--text-muted);
-    margin-top: 40px;
-  }
   .cart-item {
     display: flex;
     gap: 12px;
@@ -1086,7 +1081,6 @@ function parseCSV(text) {
   }).filter(p => p.nome && p.status !== 'desativado' && p.status !== 'não' && p.status !== 'nao' && p.status !== '0' && p.status !== 'false');
 }
 
-/* FUNÇÃO ATUALIZADA: Agora as setas são geradas com ícones SVG sofisticados e minimalistas */
 function buildGallery(fotos) {
   const fotosValidas = fotos.map(f => f.trim()).filter(f => f.length > 0);
 
@@ -1106,7 +1100,6 @@ function buildGallery(fotos) {
 
   const dots = fotosValidas.length > 1 ? `<div class="gallery-dots">${fotosValidas.map((_,i) => `<div class="gallery-dot ${i===0?'active':''}" data-idx="${i}"></div>`).join('')}</div>` : '';
   
-  // Setas em formato SVG Chevron Minimalistas substituindo o padrão antigo
   const arrows = fotosValidas.length > 1 ? `
     <div class="gallery-arrows">
       <button class="gallery-arrow" data-dir="-1" aria-label="Foto Anterior">
@@ -1247,7 +1240,6 @@ function initCardEvents() {
       return;
     }
 
-    /* Suporte a cliques nas novas setas ou nos SVGs contidos nelas */
     if (e.target.classList.contains('gallery-arrow') || e.target.closest('.gallery-arrow')) {
       e.preventDefault(); e.stopPropagation();
       const btn = e.target.classList.contains('gallery-arrow') ? e.target : e.target.closest('.gallery-arrow');
@@ -1310,16 +1302,17 @@ function initCardEvents() {
       return;
     }
 
+    // CORREÇÃO AQUI: Captura correta e abertura do modal ao clicar na imagem da galeria
     const clickedGallery = e.target.closest('.card-gallery');
     if (clickedGallery && !clickedGallery.classList.contains('card-no-photo')) {
       const card = clickedGallery.closest('.card');
       const produtoId = card.getAttribute('data-id');
       const produto = globalProdutos.find(p => p.id === produtoId);
       
-      if (produto && p.fotos.length > 0) {
+      if (produto && produto.fotos.length > 0) {
         currentModalImages = produto.fotos.map(f => f.trim()).filter(f => f.length > 0);
         const activeImg = clickedGallery.querySelector('img.active');
-        const activeSrc = activeImg ? activeImg.getAttribute('src') : currentModalImages[0];
+        const activeSrc = activeImg ? activeImg.getAttribute('src') : encodeURI(currentModalImages[0]);
         
         currentModalIndex = currentModalImages.findIndex(src => encodeURI(src) === activeSrc || src === activeSrc);
         if (currentModalIndex === -1) currentModalIndex = 0;
