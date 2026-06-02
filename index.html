@@ -527,9 +527,12 @@
     z-index: 5;
   }
   
-  /* Garante uma borda escura sutil no modo escuro se a cor for muito clara */
+  /* ── ALTERAÇÃO: GARANTE BORDA E AURA BRANCA PREMIUM NO MODO ESCURO ── */
   [data-theme="dark"] .color-selector-dot.selected {
     border-color: #ffffff !important;
+    --glow-color: rgba(255, 255, 255, 0.5) !important;
+    box-shadow: 0 0 14px 4px var(--glow-color), 
+                0 0 4px 1px rgba(255, 255, 255, 0.3) !important;
   }
 
   /* ── ESTILIZAÇÃO DO BOTÃO TABELA DE MEDIDAS (MUITO MAIS CHAMATIVO NO CARD) ── */
