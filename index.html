@@ -480,12 +480,6 @@
     color: var(--white);
     border-color: var(--preto);
   }
-  [data-theme="dark"] .size-option.selected {
-    background: var(--gold);
-    color: var(--preto);
-    border-color: var(--gold);
-  }
-  
   .color-selector-dot {
     width: 22px;
     height: 22px;
@@ -1106,18 +1100,18 @@ function buildInteractiveSelectors(tipoPlaca, produtoId, tamanhos) {
 
   let htmlCores = coresListadas.map((c, idx) => {
     const hex = CORES_MAPA[c] || '#C8B89A';
-    return `<div class="color-selector-dot ${idx === 0 ? 'selected' : ''}" data-color="${c}" style="background-color: ${hex};" title="${c}"></div>`;
+    return `<div class="color-selector-dot ${idx === 0 ? 'selected' : ''}" data-color="${c}" style="background-color: ${hex} !important; -webkit-print-color-adjust: exact; color-adjust: exact;" title="${c}"></div>`;
   }).join('');
 
   return `
-    <div class="product-selectors" data-pid="${produtoId}">
+    <div class="product-selectors" data-pid="${produtoId}" style="background: transparent !important;">
       <div>
-        <div class="selector-label">Tamanho:</div>
-        <div class="options-group size-group">${htmlTamanhos}</div>
+        <div class="selector-label" style="background: transparent !important; color: var(--text) !important;">Tamanho:</div>
+        <div class="options-group size-group" style="background: transparent !important;">${htmlTamanhos}</div>
       </div>
-      <div class="color-selector-wrapper">
-        <div class="selector-label">Cor Selecionada:</div>
-        <div class="options-group color-group">${htmlCores}</div>
+      <div class="color-selector-wrapper" style="background: transparent !important;">
+        <div class="selector-label" style="background: transparent !important; color: var(--text) !important;">Cor Selecionada:</div>
+        <div class="options-group color-group" style="background: transparent !important;">${htmlCores}</div>
       </div>
     </div>
   `;
