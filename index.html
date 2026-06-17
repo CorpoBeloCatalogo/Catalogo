@@ -35,9 +35,9 @@
     --white: #FFFFFF;
     --text: #1A1A1A; /* Escurecido para melhor leitura geral */
     --text-muted: #3D3530; /* Escurecido (Antigo #7A7068 era muito claro) */
-    --border: #CBBFB2; /* Borda levemente mais visível */
-    --card-radius: 16px;
-    --transition: 0.25s ease;
+    --border: #E8E2DA; /* Borda premium ultra leve */
+    --card-radius: 12px; /* Cantos levemente mais sofisticados/sutis */
+    --transition: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     --gold: #B8986A;
     --wpp-green: #25D366;
     --fade-color: rgba(247, 244, 240, 1);
@@ -49,7 +49,7 @@
     --white: #1E1E1E;
     --text: #F5F5F5;
     --text-muted: #C5BBB4; /* Mais claro no modo dark para dar contraste */
-    --border: #444444;
+    --border: #2D2D2D;
     --beige-light: #2A2621;
     --gold-dark: #D4AF37;
     --fade-color: rgba(18, 18, 18, 1);
@@ -300,11 +300,11 @@
   /* ── GRID DE CARDS ── */
   .cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 32px; /* Espaçamento mais amplo e elegante entre os itens */
   }
 
-  /* ── CARD BASE ── */
+  /* ── CARD BASE PREMIUM REESTILIZADO ── */
   .card {
     background: var(--white);
     border-radius: var(--card-radius);
@@ -313,20 +313,22 @@
     transition: transform var(--transition), box-shadow var(--transition), background var(--transition), border-color var(--transition);
     display: flex;
     flex-direction: column;
+    box-shadow: 0 4px 20px rgba(140, 123, 99, 0.04); /* Sombra ultra leve e sofisticada */
   }
 
   .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 16px 40px rgba(0,0,0,0.15);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 35px rgba(140, 123, 99, 0.08);
+    border-color: rgba(184, 152, 106, 0.3);
   }
 
   /* ── CARD — GALERIA DE FOTOS ── */
   .card-gallery {
     position: relative;
     width: 100%;
-    aspect-ratio: 4/3;
+    aspect-ratio: 1 / 1; /* Aspect ratio quadrado (1:1) padrão de e-commerce de luxo */
     overflow: hidden;
-    background: var(--beige-light);
+    background: var(--bg);
     cursor: zoom-in;
     transition: background var(--transition);
   }
@@ -338,37 +340,45 @@
     height: 100%;
     object-fit: cover;
     opacity: 0;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .card:hover .card-gallery img.active {
+    transform: scale(1.03); /* Leve aproximação elegante da imagem no hover */
   }
 
   .card-gallery img.active { opacity: 1; }
 
   .gallery-dots {
     position: absolute;
-    bottom: 10px;
+    bottom: 14px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 5px;
+    gap: 6px;
     z-index: 2;
     max-width: 90%;
     overflow-x: auto;
     scrollbar-width: none;
+    background: rgba(26, 26, 26, 0.15); /* Pílula de fundo suave para os dots */
+    padding: 4px 8px;
+    border-radius: 20px;
+    backdrop-filter: blur(4px);
   }
   .gallery-dots::-webkit-scrollbar { display: none; }
 
   .gallery-dot {
-    width: 6px; height: 6px;
+    width: 5px; height: 5px;
     border-radius: 50%;
-    background: rgba(255,255,255,0.5);
+    background: rgba(255,255,255,0.4);
     cursor: pointer;
     flex-shrink: 0;
     transition: background var(--transition), transform var(--transition);
   }
 
-  .gallery-dot.active { background: #fff; transform: scale(1.3); }
+  .gallery-dot.active { background: #fff; transform: scale(1.4); }
 
-  /* ── CONTAINER REESTILIZADO DAS SETAS DO CARD (SOFISTICADO) ── */
+  /* ── CONTAINER DAS SETAS DO CARD ── */
   .gallery-arrows {
     position: absolute;
     inset: 0;
@@ -377,45 +387,45 @@
     justify-content: space-between;
     padding: 0 14px;
     opacity: 0;
-    pointer-events: none; /* Deixa cliques passarem para a foto fora das setas */
+    pointer-events: none;
     transition: opacity 0.3s ease;
   }
 
-  /* Faz as setas aparecerem suavemente ao passar o mouse no card */
   .card-gallery:hover .gallery-arrows { 
     opacity: 1; 
   }
 
-  /* Botão de seta minimalista premium */
   .gallery-arrow {
-    background: transparent;
+    background: rgba(255, 255, 255, 0.7); /* Botões com fundo sutil desfocado */
+    backdrop-filter: blur(4px);
     border: none;
     width: 32px; 
     height: 32px;
+    border-radius: 50%;
     cursor: pointer;
     display: flex; 
     align-items: center; 
     justify-content: center;
-    color: #FFFFFF;
-    filter: drop-shadow(0px 2px 5px rgba(0, 0, 0, 0.4)); /* Garante leitura sobre fotos claras */
-    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.25s ease;
+    color: var(--preto);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
     z-index: 3;
-    pointer-events: auto; /* Reativa os cliques apenas na seta */
+    pointer-events: auto;
     padding: 0;
   }
 
-  /* Micro-interação elegante ao focar nas setas */
   .gallery-arrow:hover { 
-    color: var(--gold);
-    transform: scale(1.18);
+    color: #FFFFFF;
+    background: var(--gold);
+    transform: scale(1.08);
   }
   
   .gallery-arrow svg {
-    width: 24px;
-    height: 24px;
+    width: 18px;
+    height: 18px;
     fill: none;
     stroke: currentColor;
-    stroke-width: 2;
+    stroke-width: 2.5;
     stroke-linecap: round;
     stroke-linejoin: round;
   }
@@ -423,33 +433,35 @@
   .card-no-photo { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--text-muted); font-size: 13px; cursor: default; }
   .card-no-photo svg { opacity: 0.35; }
 
-  /* ── CARD — BADGES ADAPTÁVEIS ── */
+  /* ── CARD — BADGES ── */
   .card-badge {
     position: absolute;
-    top: 12px;
-    left: 12px;
-    padding: 4px 10px;
-    border-radius: 6px;
+    top: 14px;
+    left: 14px;
+    padding: 5px 12px;
+    border-radius: 4px;
     font-size: 10px;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     font-weight: 600;
     z-index: 4;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
   }
 
-  /* Badge de Desconto Dinâmica */
+  /* Badge de Desconto Dinâmica Minimalista */
   .badge-discount {
     position: absolute;
-    top: 12px;
-    right: 12px;
+    top: 14px;
+    right: 14px;
     background: var(--vermelho);
     color: #fff;
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-size: 11px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 10px;
     font-weight: 700;
+    letter-spacing: 0.05em;
     z-index: 4;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 10px rgba(200,35,51,0.2);
   }
 
   .badge-beige-preto { background: var(--preto); color: #EDE4D8; }
@@ -461,30 +473,30 @@
   .badge-vermelho { background: var(--vermelho); color: #fff; }
   .badge-azul { background: var(--azul); color: #D6E4F5; }
 
-  /* ── CARD — INFO ── */
-  .card-body { padding: 18px 20px 14px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
-  .card-category { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text); font-weight: 700; } /* Escurecido e com mais peso */
+  /* ── CARD — INFO (Espaçamento sofisticado) ── */
+  .card-body { padding: 22px 24px 18px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+  .card-category { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); font-weight: 700; }
   
-  /* Atualizada para Slab Serif (Arvo) */
-  .card-name { font-family: 'Arvo', serif; font-size: 18px; font-weight: 700; color: var(--text); line-height: 1.3; }
+  .card-name { font-family: 'Arvo', serif; font-size: 19px; font-weight: 700; color: var(--text); line-height: 1.35; }
   
-  .card-desc { font-size: 13px; color: var(--text-soft); line-height: 1.5; flex: 1; }
+  .card-desc { font-size: 13px; color: var(--text-muted); opacity: 0.85; line-height: 1.6; flex: 1; }
 
   /* SELETORES DE TAMANHO E COR NO CARD */
   .product-selectors {
-    margin-top: 8px;
+    margin-top: 12px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    border-top: 1px dashed var(--border);
-    padding-top: 10px;
+    gap: 12px;
+    border-top: 1px solid var(--border);
+    padding-top: 14px;
   }
   .selector-label {
-    font-size: 12px;
-    font-weight: 700; /* Mais visível */
-    color: var(--text); /* Texto da etiqueta "Tamanho/Cor" muito mais escuro */
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
   }
   .options-group {
     display: flex;
@@ -492,24 +504,26 @@
     gap: 6px;
   }
   
-  /* Empurra o contêiner de cores um pouco mais para baixo */
   .color-selector-wrapper {
-    margin-top: 12px;
+    margin-top: 6px;
   }
   
   .size-option {
-    border: 1.5px solid var(--text); /* Borda padrão mais escura */
-    padding: 4px 10px;
-    font-size: 12px;
-    border-radius: 6px;
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+    font-size: 11px;
+    border-radius: 4px; /* Unificação estética */
     background: var(--white);
-    color: var(--text); /* Letra interna mais escura */
+    color: var(--text);
     cursor: pointer;
-    font-weight: 700; /* Texto do tamanho em negrito */
+    font-weight: 700;
     transition: var(--transition);
   }
+  .size-option:hover {
+    border-color: var(--text);
+  }
 
-  /* ── EFEITO DE SELEÇÃO NOS TAMANHOS (MODO CLARO E ESCURO) ── */
+  /* EFEITO DE SELEÇÃO NOS TAMANHOS */
   .size-option.selected {
     background: var(--preto);
     color: var(--white);
@@ -522,74 +536,74 @@
     border-color: #ffffff !important;
   }
   
-  /* ── BOLINHA DE COR BASE ── */
+  /* BOLINHA DE COR BASE */
   .color-selector-dot {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     cursor: pointer;
-    border: 2px solid var(--border);
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    border: 1px solid transparent;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    -webkit-appearance: none;
-    appearance: none;
+    box-shadow: inset 0 0 0 2px var(--white); /* Círculo interno branco elegante */
   }
   
-  /* ── EFEITO DE BRILHO (GLOW) INTENSO PARA A BOLINHA SELECIONADA ── */
+  /* EFEITO DE BRILHO (GLOW) SUAVE */
   .color-selector-dot.selected {
-    transform: scale(1.22);
-    border-color: #ffffff !important; /* Borda interna branca para destacar do glow */
-    box-shadow: 0 0 14px 4px var(--glow-color, rgba(200, 184, 154, 0.8)), 
-                0 0 4px 1px var(--glow-color, rgba(200, 184, 154, 0.6));
-    z-index: 5;
+    transform: scale(1.15);
+    box-shadow: inset 0 0 0 2px var(--white), 
+                0 0 0 2px var(--text),
+                0 4px 10px rgba(0,0,0,0.15);
   }
   
   [data-theme="dark"] .color-selector-dot.selected {
-    border-color: #ffffff !important;
-    --glow-color: rgba(255, 255, 255, 0.5) !important;
-    box-shadow: 0 0 14px 4px var(--glow-color), 
-                0 0 4px 1px rgba(255, 255, 255, 0.3) !important;
+    box-shadow: inset 0 0 0 2px var(--white), 
+                0 0 0 2px #ffffff,
+                0 4px 10px rgba(255,255,255,0.15);
   }
 
-  /* ── ESTILIZAÇÃO DO BOTÃO TABELA DE MEDIDAS (MUITO MAIS CHAMATIVO NO CARD) ── */
+  /* BOTÃO TABELA DE MEDIDAS */
   .btn-tabela-card {
-    background: var(--gold);
-    border: 1px solid var(--beige-dark);
-    color: var(--preto);
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
     padding: 10px 16px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 700;
-    margin-top: 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    margin-top: 10px;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
     width: 100%;
-    box-shadow: 0 4px 10px rgba(184, 152, 106, 0.2);
-    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: none;
+    transition: var(--transition);
   }
   .btn-tabela-card:hover {
-    background: var(--preto);
-    color: var(--gold);
-    border-color: var(--gold);
-    transform: translateY(-1px);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+    background: var(--text);
+    color: var(--white);
+    border-color: var(--text);
+    transform: none;
+    box-shadow: none;
   }
   [data-theme="dark"] .btn-tabela-card {
-    background: #F7F4F0; /* Cor Clara aplicada no Modo Dark */
-    color: var(--preto);
+    background: transparent;
+    border-color: var(--border);
+    color: var(--text);
   }
   [data-theme="dark"] .btn-tabela-card:hover {
-    background: var(--white); /* Cor Clara ao passar o mouse */
-    color: var(--preto);
+    background: #FFFFFF;
+    color: #121212;
+    border-color: #FFFFFF;
   }
 
-  /* ── CARD — CORES ANTIGAS (INFO) ── */
+  /* CARD — CORES ANTIGAS */
   .card-colors { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
-  .card-colors-label { font-size: 11px; color: var(--text); font-weight: 700; } /* Escurecido */
-  .color-dot { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid rgba(0,0,0,0.2); display: inline-block; }
+  .card-colors-label { font-size: 11px; color: var(--text); font-weight: 700; }
+  .color-dot { width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.15); display: inline-block; }
   
   .dot-beige { background: #C8B89A; }
   .dot-preto { background: #1A1A1A; }
@@ -598,35 +612,52 @@
   .dot-vermelho { background: #C82333; }
   .dot-azul { background: #2B4A7A; }
 
-  /* ── CARD — PREÇO ── */
-  .card-footer { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px 18px; border-top: 1px solid var(--border); background: rgba(0,0,0,0.02); transition: background var(--transition), border-color var(--transition); }
-  .price-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text); font-weight: 700; margin-bottom: 2px; } /* Label "PREÇO" escurecida */
-  .price-value { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 700; color: var(--text); } /* Valor do preço maior e mais escuro */
+  /* ── CARD — PREÇO (Design Limpo/Unificado) ── */
+  .card-footer { 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    padding: 16px 24px 22px; 
+    border-top: 1px solid var(--border); 
+    background: transparent; /* Removido fundo acinzentado para unificar o card */
+  }
+  .price-label { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); font-weight: 600; margin-bottom: 3px; }
+  .price-value { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600; color: var(--text); }
   
-  /* Estilos do preço antigo rasurado */
-  .price-old { font-size: 13px; text-decoration: line-through; color: var(--text-muted); font-weight: 600; margin-bottom: -2px; }
+  .price-old { font-size: 12px; text-decoration: line-through; color: var(--text-muted); opacity: 0.6; font-weight: 500; margin-bottom: -1px; }
 
+  /* BOTÃO ADICIONAR PREMIUM */
   .btn-pedir {
-    background: var(--text); color: var(--white); border: none; border-radius: 50px; 
-    padding: 8px 14px;
+    background: var(--text); 
+    color: var(--white); 
+    border: none; 
+    border-radius: 4px; /* Forma sutil combinando com o resto do card */
+    padding: 10px 16px;
     font-family: 'DM Sans', sans-serif; 
     font-size: 11px;
-    font-weight: 600; cursor: pointer; transition: var(--transition);
-    display: flex; align-items: center; gap: 6px; text-decoration: none;
+    letter-spacing: 0.04em;
+    font-weight: 600; 
+    cursor: pointer; 
+    transition: var(--transition);
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+    text-decoration: none;
+    text-transform: uppercase;
   }
   .btn-pedir:hover { background: var(--gold); color: var(--preto); }
   .btn-pedir svg { width: 12px; height: 12px; fill: currentColor; }
 
-  /* Estilos de Placas Modificados para Dark Mode */
+  /* Ajustes das Placas */
   .card.card-placa-bp .card-gallery { background: #1A1A1A; }
-  .card.card-placa-bp { border-color: #333; }
+  .card.card-placa-bp { border-color: var(--border); }
   .card.card-placa-azul .card-gallery { background: var(--azul-dark); }
-  .card.card-placa-azul { border-color: var(--azul); }
+  .card.card-placa-azul { border-color: var(--border); }
   
-  [data-theme="light"] .card.card-placa-azul .card-footer { background: #f0f5fb; }
-  [data-theme="light"] .card.card-placa-azul .price-value { color: var(--azul-dark); }
-  .card.card-placa-azul .btn-pedir { background: var(--azul); color: #fff; }
-  .card.card-placa-azul .btn-pedir:hover { background: var(--azul-dark); }
+  [data-theme="light"] .card.card-placa-azul .card-footer { background: transparent; }
+  [data-theme="light"] .card.card-placa-azul .price-value { color: var(--text); }
+  .card.card-placa-azul .btn-pedir { background: var(--text); color: #fff; }
+  .card.card-placa-azul .btn-pedir:hover { background: var(--gold); color: var(--preto); }
 
   /* ── EMPTY STATE ── */
   .empty-state { grid-column: 1 / -1; text-align: center; padding: 80px 20px; color: var(--text-muted); }
@@ -746,7 +777,6 @@
     font-weight: 500;
   }
   
-  /* ── AJUSTE PREMIUM DO BOTÃO FECHAR (X) DO CARRINHO ── */
   .cart-close-btn {
     background: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(200, 184, 154, 0.3);
@@ -761,7 +791,7 @@
     align-items: center;
     justify-content: center;
     transition: var(--transition);
-    padding-bottom: 4px; /* Ajuste óptico de alinhamento vertical do caractere multiplicador × */
+    padding-bottom: 4px;
   }
   .cart-close-btn:hover {
     background: var(--vermelho);
@@ -770,7 +800,6 @@
     transform: scale(1.08);
   }
   
-  /* Destaque adicional do botão fechar no Modo Dark */
   [data-theme="dark"] .cart-close-btn {
     background: rgba(255, 255, 255, 0.25);
     border-color: rgba(255, 255, 255, 0.5);
@@ -825,7 +854,6 @@
     gap: 8px;
   }
   
-  /* ── BOTÕES DE QUANTIDADE DO CARRINHO ADAPTADOS AO DARK MODE ── */
   .qty-btn {
     width: 26px;
     height: 26px;
@@ -924,7 +952,6 @@
     .cart-toggle-btn span { display: none; }
     .cart-toggle-btn { padding: 10px; }
     
-    /* Exibe as setas sempre em celulares para facilitar navegação por toque */
     .gallery-arrows { opacity: 1 !important; padding: 0 6px; }
     .gallery-arrow { width: 28px; height: 28px; }
   }
